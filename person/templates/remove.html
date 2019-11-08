@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block main_title %}Person{% endblock %}
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Confirm the exclusion of {{ person.name }}?</p>
+        <p>
+            <a href="{% url 'person_edit' person.id %}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-danger">Confirm</button>
+        </p>
+    </form>
+{% endblock %}

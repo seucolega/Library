@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block main_title %}Person{% endblock %}
+{% block main %}
+    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        {% if person_list %}
+            {#<h6 class="border-bottom border-gray pb-2 mb-0">People</h6>#}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="search" class="sr-only">Search for:</label>
+                    <input type="search" class="form-control" id="search" name="search"
+                           placeholder="Search..." aria-label="Search for...">
+                </div>
+            </form>
+
+            {% for person in person_list %}
+                <div class="media text-muted">
+                    <a href="{% url 'person_edit' person.id %}">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                             xmlns="http://www.w3.org/2000/svg"
+                             preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                             aria-label="Placeholder: 32x32">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#007bff"></rect>
+                            <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                        </svg>
+                    </a>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <a href="{% url 'person_edit' person.id %}"><strong
+                                    class="text-gray-dark">{{ person.name }}</strong></a>
+                            <a href="{% url 'person_edit' person.id %}">Edit</a>
+                        </div>
+                        <span class="d-block">{{ person.nickname }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <small class="d-block text-right mt-3">
+                <a href="{% url 'person_new' %}" class="btn btn-primary">New person</a>
+            </small>
+        {% else %}
+            {% if search_for %}
+                <p>No records to show.</p>
+                <a href="{% url 'person_list' %}" class="btn btn-secondary">Back</a>
+            {% else %}
+                <p>No records to show. How about creating the first one?</p>
+                <p><a href="{% url 'person_new' %}" class="btn btn-primary">New person</a></p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
