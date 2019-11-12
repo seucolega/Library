@@ -1,9 +1,11 @@
-# from .views import person_list, person_list_json, person_new, person_edit, person_remove
+from django.urls import path
+
+from book.views import book_list, book_new, book_edit, book_remove
 
 urlpatterns = [
-    # path('', person_list, name='person_list'),
-    # path('list_json', person_list_json),
-    # path('new', person_new, name='person_new'),
-    # path('edit/<int:person_id>', person_edit, name='person_edit'),
-    # path('remove/<int:person_id>', person_remove, name='person_remove'),
+    path('', book_list, name='book_list'),
+    path('new', book_new, name='book_new'),
+    path('edit/<int:book_id>', book_edit, name='book_edit'),
+    path('remove/<int:book_id>', book_remove, name='book_remove'),
+    # path('list_json', book_list_json),
 ]

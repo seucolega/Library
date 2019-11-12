@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        <p>Confirm the exclusion of {{ model.title }}?</p>
+        <p>
+            <a href="{% url 'book_edit' model.id %}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-danger">Confirm</button>
+        </p>
+    </form>
+{% endblock %}

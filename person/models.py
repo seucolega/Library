@@ -16,7 +16,7 @@ class Person(models.Model):
     last_name = models.CharField(max_length=30)
     # nickname = models.CharField(max_length=30)
     # date_of_birth = models.DateField()
-    type = models.ManyToManyField(PersonType)
+    # type = models.ManyToManyField(PersonType)
 
     class Meta:
         ordering = ['first_name']
