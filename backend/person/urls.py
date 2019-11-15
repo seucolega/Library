@@ -1,6 +1,6 @@
 from django.urls import path
 
-from person.views import person_list, person_new, person_edit, person_remove
+from backend.person.views import person_list, person_new, person_edit, person_remove
 
 urlpatterns = [
     path('', person_list, name='person_list'),

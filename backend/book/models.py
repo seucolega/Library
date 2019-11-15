@@ -1,7 +1,5 @@
 from django.db import models
 
-from person.models import Person
-
 
 class BookPublisher(models.Model):
     class Meta:
@@ -37,6 +35,66 @@ class BookTextualClassification(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# class BookPersonAuthorship(models.Model):
+#     class Meta:
+#         verbose_name = 'Author'
+#         verbose_name_plural = 'Authors'
+#         ordering = ['name']
+#
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+#
+#
+# class BookPersonIllustration(models.Model):
+#     class Meta:
+#         verbose_name = 'Illustrator'
+#         verbose_name_plural = 'Illustrators'
+#         ordering = ['name']
+#
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+#
+#
+# class BookPersonTranslation(models.Model):
+#     class Meta:
+#         verbose_name = 'Translator'
+#         verbose_name_plural = 'Translators'
+#         ordering = ['name']
+#
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+#
+#
+# class BookPersonOrganization(models.Model):
+#     class Meta:
+#         verbose_name = 'Organizer'
+#         verbose_name_plural = 'Organizers'
+#         ordering = ['name']
+#
+#     name = models.CharField(max_length=100)
+#
+#     def __str__(self):
+#         return self.name
+
+
+# class BookCollection(models.Model):
+#     class Meta:
+#         verbose_name = 'Collection'
+#         verbose_name_plural = 'Collections'
+#         ordering = ['name']
+#
+#     name = models.CharField(max_length=50)
+#
+#     def __str__(self):
+#         return self.name
 
 
 class BookPersonType(models.Model):
@@ -78,13 +136,29 @@ class Book(models.Model):
     original_title = models.CharField(max_length=100)
     publisher = models.ForeignKey(BookPublisher, on_delete=models.PROTECT)
     age_classification = models.ManyToManyField(BookAgeClassification)
+    # TODO: Transformar relacionamento com classificação textual em ManyToOne
     textual_classification = models.ManyToManyField(BookTextualClassification)
 
-    # cover_image = models.ImageField()
+    # authorship = models.ManyToManyField(BookPersonAuthorship)
+    # illustration = models.ManyToManyField(BookPersonIllustration, null=True)
+    # translation = models.ManyToManyField(BookPersonTranslation, null=True)
+    # organization = models.ManyToManyField(BookPersonOrganization, null=True)
+    # collection = models.ManyToManyField(BookCollection, null=True)
+    # image = models.ImageField(null=True, blank=True)
+
+    # checksum = models.CharField(max_length=32, blank=True, null=True)
     # estoque
 
     def __str__(self):
         return self.title
+
+    # def _update_md5(self):
+    #     if self.image:
+    #         self.checksum = hash_file(self.image)
+    #
+    # def save(self, *args, **kwargs):
+    #     self._update_md5()
+    #     super().save(*args, **kwargs)
 
 
 class BookPerson(models.Model):
@@ -98,8 +172,8 @@ class BookPerson(models.Model):
     type = models.ManyToManyField(BookPersonType)
 
     @property
-    def name(self):
-        return f'{self.person.first_name} {self.person.last_name} ({self.type.name})'
+    def type_verbose(self):
+        return ', '.join([t.name for t in self.type.only('name')])
 
     def __str__(self):
-        return self.name
+        return f'{self.person.first_name} {self.person.last_name} ({self.type_verbose})'

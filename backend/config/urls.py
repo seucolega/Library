@@ -16,8 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from book import urls as book_urls
-from person import urls as person_urls
+from backend.book import urls as book_urls
+from backend.person import urls as person_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
