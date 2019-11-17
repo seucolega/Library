@@ -1,53 +1,30 @@
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.shortcuts import render
+from rest_framework import viewsets
 
-from .forms import BookForm
-from .models import Book
-
-
-# from django.http.response import HttpResponse
-# from django.core import serializers
+from book.models import BookPublisher, BookAgeClassification, BookTextualClassification, BookPersonType, Book
+from .serializers import BookPublisherSerializer, BookAgeClassificationSerializer, BookTextualClassificationSerializer, \
+    BookPersonTypeSerializer, BookSerializer
 
 
-def book_list(request):
-    search_for = request.POST.get('search', '')
-    return render(request, 'book_list.html',
-                  {
-                      'list': Book.objects.filter(title__icontains=search_for),
-                      'search_for': search_for
-                  })
-    # return render(request, 'book_list.html', {'list': Book.objects.all()})
+class BookPublisherViewSet(viewsets.ModelViewSet):
+    queryset = BookPublisher.objects.all().order_by('name')
+    serializer_class = BookPublisherSerializer
 
 
-def book_new(request):
-    form = BookForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        form.save()
-        return redirect('book_list')
-    return render(request, 'book_edit.html', {'form': form})
+class BookAgeClassificationViewSet(viewsets.ModelViewSet):
+    queryset = BookAgeClassification.objects.all().order_by('name')
+    serializer_class = BookAgeClassificationSerializer
 
 
-def book_edit(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    form = BookForm(request.POST or None, request.FILES or None, instance=book)
-    if form.is_valid():
-        form.save()
-        return redirect('book_list')
-    return render(request, 'book_edit.html', {'id': book_id, 'form': form})
+class BookTextualClassificationViewSet(viewsets.ModelViewSet):
+    queryset = BookTextualClassification.objects.all().order_by('name')
+    serializer_class = BookTextualClassificationSerializer
 
 
-def book_remove(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    if request.method == 'POST':
-        book.delete()
-        return redirect('book_list')
-    return render(request, 'book_remove.html', {'model': book})
-
-# def book_list_json(request):
-#     data = serializers.serialize('json', Book.objects.all())
-#     return HttpResponse(data, content_type='application/json')
+class BookPersonTypeViewSet(viewsets.ModelViewSet):
+    queryset = BookPersonType.objects.all().order_by('name')
+    serializer_class = BookPersonTypeSerializer
 
 
-# def book_list_(request):
-#     return HttpResponse('Oi')
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all().order_by('title')
+    serializer_class = BookSerializer

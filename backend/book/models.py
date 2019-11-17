@@ -2,121 +2,121 @@ from django.db import models
 
 
 class BookPublisher(models.Model):
+    name = models.CharField(max_length=50)
+
     class Meta:
         verbose_name = 'Publisher'
         verbose_name_plural = 'Publishers'
         ordering = ['name']
-
-    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
 
 class BookAgeClassification(models.Model):
+    name = models.CharField(max_length=50)
+
     class Meta:
         verbose_name = 'Age Classification'
         verbose_name_plural = 'Age Classifications'
         ordering = ['name']
-
-    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
 
 class BookTextualClassification(models.Model):
+    name = models.CharField(max_length=50)
+
     class Meta:
         verbose_name = 'Textual Classification'
         verbose_name_plural = 'Textual Classifications'
         ordering = ['name']
-
-    name = models.CharField(max_length=50)
 
     def __str__(self):
         return self.name
 
 
 # class BookPersonAuthorship(models.Model):
+#     name = models.CharField(max_length=100)
+#
 #     class Meta:
 #         verbose_name = 'Author'
 #         verbose_name_plural = 'Authors'
 #         ordering = ['name']
-#
-#     name = models.CharField(max_length=100)
 #
 #     def __str__(self):
 #         return self.name
 #
 #
 # class BookPersonIllustration(models.Model):
+#     name = models.CharField(max_length=100)
+#
 #     class Meta:
 #         verbose_name = 'Illustrator'
 #         verbose_name_plural = 'Illustrators'
 #         ordering = ['name']
-#
-#     name = models.CharField(max_length=100)
 #
 #     def __str__(self):
 #         return self.name
 #
 #
 # class BookPersonTranslation(models.Model):
+#     name = models.CharField(max_length=100)
+#
 #     class Meta:
 #         verbose_name = 'Translator'
 #         verbose_name_plural = 'Translators'
 #         ordering = ['name']
-#
-#     name = models.CharField(max_length=100)
 #
 #     def __str__(self):
 #         return self.name
 #
 #
 # class BookPersonOrganization(models.Model):
+#     name = models.CharField(max_length=100)
+#
 #     class Meta:
 #         verbose_name = 'Organizer'
 #         verbose_name_plural = 'Organizers'
 #         ordering = ['name']
-#
-#     name = models.CharField(max_length=100)
 #
 #     def __str__(self):
 #         return self.name
 
 
 # class BookCollection(models.Model):
+#     name = models.CharField(max_length=50)
+#
 #     class Meta:
 #         verbose_name = 'Collection'
 #         verbose_name_plural = 'Collections'
 #         ordering = ['name']
-#
-#     name = models.CharField(max_length=50)
 #
 #     def __str__(self):
 #         return self.name
 
 
 class BookPersonType(models.Model):
+    name = models.CharField(max_length=30)
+
     class Meta:
         verbose_name = 'Person Type'
         verbose_name_plural = 'Person Types'
         ordering = ['name']
-
-    name = models.CharField(max_length=30)
 
     def __str__(self):
         return self.name
 
 
 class BookPersonProfile(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+
     class Meta:
         verbose_name = 'Person'
         verbose_name_plural = 'People'
         ordering = ['first_name', 'last_name']
-
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
 
     @property
     def name(self):
@@ -127,11 +127,6 @@ class BookPersonProfile(models.Model):
 
 
 class Book(models.Model):
-    class Meta:
-        verbose_name = 'Book'
-        verbose_name_plural = 'Books'
-        ordering = ['title']
-
     title = models.CharField(max_length=100)
     original_title = models.CharField(max_length=100)
     publisher = models.ForeignKey(BookPublisher, on_delete=models.PROTECT)
@@ -149,8 +144,26 @@ class Book(models.Model):
     # checksum = models.CharField(max_length=32, blank=True, null=True)
     # estoque
 
+    class Meta:
+        verbose_name = 'Book'
+        verbose_name_plural = 'Books'
+        ordering = ['title']
+
     def __str__(self):
         return self.title
+
+    @property
+    def person(self):
+        return BookPerson.objects.filter(book=self.pk)
+
+    @person.setter
+    def person(self, value):
+        current = set(self.person)
+        for book_person in current.difference(value):
+            book_person.delete()
+        for book_person in set(value).difference(current):
+            book_person.update({'book': self.pk})
+            BookPerson(book_person).save()
 
     # def _update_md5(self):
     #     if self.image:
@@ -162,14 +175,14 @@ class Book(models.Model):
 
 
 class BookPerson(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    person = models.ForeignKey(BookPersonProfile, on_delete=models.PROTECT)
+    type = models.ManyToManyField(BookPersonType)
+
     class Meta:
         verbose_name = 'Person (Book)'
         verbose_name_plural = 'People (Book)'
         ordering = ['person__first_name', 'person__last_name']
-
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    person = models.ForeignKey(BookPersonProfile, on_delete=models.PROTECT)
-    type = models.ManyToManyField(BookPersonType)
 
     @property
     def type_verbose(self):
