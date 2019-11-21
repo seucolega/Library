@@ -1,8 +1,8 @@
-import React from "react";
-import Page from "./Page.jsx";
+import React, {Component} from "react";
+// import Page from "./Page.jsx";
 import PageHeader from "../presentational/PageHeader.jsx";
 
-export default class Book extends React.Component {
+export default class Book extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,15 +33,6 @@ export default class Book extends React.Component {
                 }
             )
     }
-
-    // componentDidMount() {
-    //     fetch('http://jsonplaceholder.typicode.com/users')
-    //         .then(res => res.json())
-    //         .then((data) => {
-    //             this.setState({...{boo_list: data}})
-    //         })
-    //         .catch(console.log)
-    // }
 
     render() {
         return (

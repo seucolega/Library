@@ -1,10 +1,10 @@
-import React from "react";
+import React, {Component} from "react";
 import {Switch, Route} from "react-router-dom";
 import PageHome from "./PageHome.jsx";
 import PageBook from "./PageBook.jsx";
 import PagePerson from "./PagePerson.jsx";
 
-export default class Main extends React.Component {
+export default class Main extends Component {
     render() {
         return (
             <div id="main">
