@@ -110,20 +110,32 @@ class BookPersonType(models.Model):
 
 
 class BookPersonProfile(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    name = models.CharField(max_length=100)
 
     class Meta:
         verbose_name = 'Person'
         verbose_name_plural = 'People'
-        ordering = ['first_name', 'last_name']
-
-    @property
-    def name(self):
-        return f'{self.first_name} {self.last_name}'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
+
+
+# class BookPerson(models.Model):
+#     person = models.ForeignKey(BookPersonProfile, on_delete=models.PROTECT)
+#     type = models.ManyToManyField(BookPersonType)
+#
+#     class Meta:
+#         verbose_name = 'Person (Book)'
+#         verbose_name_plural = 'People (Book)'
+#         ordering = ['person__name']
+#
+#     @property
+#     def type_verbose(self):
+#         return ', '.join([t.name for t in self.type.only('name')])
+#
+#     def __str__(self):
+#         return f'{self.person.name} ({self.type_verbose})'
 
 
 class Book(models.Model):
@@ -140,7 +152,6 @@ class Book(models.Model):
     # organization = models.ManyToManyField(BookPersonOrganization, null=True)
     # collection = models.ManyToManyField(BookCollection, null=True)
     # image = models.ImageField(null=True, blank=True)
-
     # checksum = models.CharField(max_length=32, blank=True, null=True)
     # estoque
 
@@ -152,18 +163,19 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-    @property
-    def person(self):
-        return BookPerson.objects.filter(book=self.pk)
+    # @property
+    # def person(self):
+    #     return self.bookperson_set.all()
 
-    @person.setter
-    def person(self, value):
-        current = set(self.person)
-        for book_person in current.difference(value):
-            book_person.delete()
-        for book_person in set(value).difference(current):
-            book_person.update({'book': self.pk})
-            BookPerson(book_person).save()
+    # @person.setter
+    # def person(self, value):
+    #     current = set(self.person)
+    #     value = [p.id for p in value]
+    #     for book_person in current.difference(value):
+    #         book_person.delete()
+    #     for book_person in set(value).difference(current):
+    #         book_person.update({'book': self.pk})
+    #         BookPerson(book_person).save()
 
     # def _update_md5(self):
     #     if self.image:
@@ -182,11 +194,11 @@ class BookPerson(models.Model):
     class Meta:
         verbose_name = 'Person (Book)'
         verbose_name_plural = 'People (Book)'
-        ordering = ['person__first_name', 'person__last_name']
+        ordering = ['person__name']
 
     @property
     def type_verbose(self):
         return ', '.join([t.name for t in self.type.only('name')])
 
     def __str__(self):
-        return f'{self.person.first_name} {self.person.last_name} ({self.type_verbose})'
+        return f'{self.person.name} ({self.type_verbose})'
