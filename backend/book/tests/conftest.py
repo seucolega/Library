@@ -1,37 +1,37 @@
 import pytest
 
-from book.models import BookPersonProfile, BookPersonType, BookAgeClassification, BookTextualClassification, Book, \
-    BookPublisher, BookPerson
+from book.models import PersonProfile, PersonType, AgeClassification, TextualClassification, Book, \
+    Publisher, Person
 
 
 @pytest.fixture
 def supply_book_publisher():
-    return BookPublisher(name='name 1')
+    return Publisher(name='name 1')
 
 
 @pytest.fixture
 def supply_book_age_classification():
-    return BookAgeClassification(name='name 1')
+    return AgeClassification(name='name 1')
 
 
 @pytest.fixture
 def supply_book_textual_classification():
-    return BookTextualClassification(name='name 1')
+    return TextualClassification(name='name 1')
 
 
 @pytest.fixture
 def supply_book_person_profile():
-    return BookPersonProfile(first_name='first_name 1', last_name='last_name 1')
+    return PersonProfile(first_name='first_name 1', last_name='last_name 1')
 
 
 @pytest.fixture
 def supply_book_person_profile_2():
-    return BookPersonProfile(first_name='first_name 2', last_name='last_name 2')
+    return PersonProfile(first_name='first_name 2', last_name='last_name 2')
 
 
 @pytest.fixture
 def supply_book_person_type():
-    return BookPersonType(name='type 1')
+    return PersonType(name='type 1')
 
 
 @pytest.fixture

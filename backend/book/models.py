@@ -1,7 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.translation import gettext as _
+from django.template.defaultfilters import slugify
 
 
-class BookPublisher(models.Model):
+class Publisher(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -12,8 +15,37 @@ class BookPublisher(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def slug(self):
+        return slugify(self.name)
 
-class BookAgeClassification(models.Model):
+    def save(self, *args, **kwargs):
+        self.clean_fields()
+        super().save(*args, **kwargs)
+
+    def clean_fields(self, exclude=None):
+        super().clean_fields(exclude=exclude)
+
+        # self.objects.get(name__unn)
+        raise ValidationError(
+            _('There is already a publisher with this name.')
+        )
+
+        # if self.status == 'draft' and self.pub_date is not None:
+        #     if exclude and 'status' in exclude:
+        #         raise ValidationError(
+        #             _('Draft entries may not have a publication date.')
+        #         )
+        #     else:
+        #         raise ValidationError({
+        #             'status': _(
+        #                 'Set status to draft if there is not a '
+        #                 'publication date.'
+        #              ),
+        #         })
+
+
+class AgeClassification(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -25,7 +57,7 @@ class BookAgeClassification(models.Model):
         return self.name
 
 
-class BookTextualClassification(models.Model):
+class TextualClassification(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -97,7 +129,7 @@ class BookTextualClassification(models.Model):
 #         return self.name
 
 
-class BookPersonType(models.Model):
+class PersonType(models.Model):
     name = models.CharField(max_length=30)
 
     class Meta:
@@ -109,7 +141,7 @@ class BookPersonType(models.Model):
         return self.name
 
 
-class BookPersonProfile(models.Model):
+class PersonProfile(models.Model):
     name = models.CharField(max_length=100)
 
     class Meta:
@@ -141,10 +173,10 @@ class BookPersonProfile(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=100)
     original_title = models.CharField(max_length=100)
-    publisher = models.ForeignKey(BookPublisher, on_delete=models.PROTECT)
-    age_classification = models.ManyToManyField(BookAgeClassification)
+    publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT)
+    age_classification = models.ManyToManyField(AgeClassification)
     # TODO: Transformar relacionamento com classificação textual em ManyToOne
-    textual_classification = models.ManyToManyField(BookTextualClassification)
+    textual_classification = models.ManyToManyField(TextualClassification)
 
     # authorship = models.ManyToManyField(BookPersonAuthorship)
     # illustration = models.ManyToManyField(BookPersonIllustration, null=True)
@@ -186,10 +218,10 @@ class Book(models.Model):
     #     super().save(*args, **kwargs)
 
 
-class BookPerson(models.Model):
+class Person(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    person = models.ForeignKey(BookPersonProfile, on_delete=models.PROTECT)
-    type = models.ManyToManyField(BookPersonType)
+    person = models.ForeignKey(PersonProfile, on_delete=models.PROTECT)
+    type = models.ManyToManyField(PersonType)
 
     class Meta:
         verbose_name = 'Person (Book)'

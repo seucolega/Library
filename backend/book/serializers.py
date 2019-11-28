@@ -1,36 +1,36 @@
 from rest_framework import serializers
 
-from book.models import BookPublisher, BookAgeClassification, BookTextualClassification, BookPersonType, Book, \
-    BookPerson
+from book.models import Publisher, AgeClassification, TextualClassification, PersonType, Book, \
+    Person
 
 
-class BookPublisherSerializer(serializers.ModelSerializer):
+class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BookPublisher
+        model = Publisher
         fields = ['id', 'name']
 
 
-class BookAgeClassificationSerializer(serializers.ModelSerializer):
+class AgeClassificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BookAgeClassification
+        model = AgeClassification
         fields = ['id', 'name']
 
 
-class BookTextualClassificationSerializer(serializers.ModelSerializer):
+class TextualClassificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BookTextualClassification
+        model = TextualClassification
         fields = ['id', 'name']
 
 
-class BookPersonTypeSerializer(serializers.ModelSerializer):
+class PersonTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BookPersonType
+        model = PersonType
         fields = ['id', 'name']
 
 
-class BookPersonSerializer(serializers.ModelSerializer):
+class PersonSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BookPerson
+        model = Person
         # depth = 2
         fields = ['person', 'type']
 
@@ -42,7 +42,7 @@ class BookSerializer(serializers.ModelSerializer):
         model = Book
         # depth = 2
         fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification',
-                  'bookperson_set']
+                  'person_set']
 
     # def to_representation(self, value):
     #     data = super().to_representation(value)

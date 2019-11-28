@@ -15,10 +15,10 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'book_publisher', views.BookPublisherViewSet)
-router.register(r'book_age_classification', views.BookAgeClassificationViewSet)
-router.register(r'book_textual_classification', views.BookTextualClassificationViewSet)
-router.register(r'book_person_type', views.BookPersonTypeViewSet)
+router.register(r'publisher', views.PublisherViewSet)
+router.register(r'age_classification', views.AgeClassificationViewSet)
+router.register(r'textual_classification', views.TextualClassificationViewSet)
+router.register(r'person_type', views.PersonTypeViewSet)
 router.register(r'book', views.BookViewSet)
 
 urlpatterns = [
