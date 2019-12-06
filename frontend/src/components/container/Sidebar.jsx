@@ -14,6 +14,9 @@ export default class Sidebar extends Component {
                     <LinkContainer to="/book">
                         <ListGroup.Item action>Livros</ListGroup.Item>
                     </LinkContainer>
+                    <LinkContainer to="/publisher">
+                        <ListGroup.Item action>Editoras</ListGroup.Item>
+                    </LinkContainer>
                     <LinkContainer to="/person">
                         <ListGroup.Item action>Pessoas</ListGroup.Item>
                     </LinkContainer>

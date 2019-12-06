@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Switch, Route} from "react-router-dom";
-import PageHome from "./PageHome.jsx";
-import PageBook from "./PageBook.jsx";
-import PagePerson from "./PagePerson.jsx";
+import {Route, Switch} from "react-router-dom";
+import PageHome from "./PageHome";
+import PageBook from "./PageBook";
+import PagePerson from "./PagePerson";
+import PagePublisher from "./PagePublisher";
 
 export default class Main extends Component {
     render() {
@@ -41,14 +42,26 @@ export default class Main extends Component {
                     </div>
                 </nav>
 
-                <div className="container-fluid">
+                <div className="container-fluid p-4 pb-5">
                     <Switch>
                         <Route exact path="/" component={PageHome}/>
-                        <Route path="/book" component={PageBook}/>
-                        <Route path="/person" component={PagePerson}/>
+                        <Route exact path="/book" component={PageBook}/>
+                        <Route path="/book/:id" component={PageBook}/>
+                        <Route exact path="/publisher" component={PagePublisher}/>
+                        <Route path="/publisher/:id" component={PagePublisher}/>
+                        <Route exact path="/person" component={PagePerson}/>
+                        <Route path="/person/:id" component={PagePerson}/>
                     </Switch>
                 </div>
             </div>
         )
     }
+}
+
+export function stringifyFormData(fd) {
+    const data = {};
+    for (let key of fd.keys()) {
+        data[key] = fd.get(key);
+    }
+    return JSON.stringify(data, null, 2);
 }
