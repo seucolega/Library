@@ -1,3 +1,5 @@
+from django.db import IntegrityError
+from django.utils.translation import gettext as _
 from rest_framework import serializers
 
 from book.models import Publisher, AgeClassification, TextualClassification, PersonType, Book, \
@@ -8,6 +10,13 @@ class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publisher
         fields = ['id', 'name']
+
+    def update(self, instance, validated_data):
+        try:
+            super(PublisherSerializer, self).update(instance, validated_data)
+        except IntegrityError:
+            raise serializers.ValidationError({'error': _('Integrity error.')})
+        return instance
 
 
 class AgeClassificationSerializer(serializers.ModelSerializer):
