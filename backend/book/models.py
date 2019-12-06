@@ -1,11 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.db import models
-from django.utils.translation import gettext as _
 from django.template.defaultfilters import slugify
 
 
 class Publisher(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Publisher'
@@ -15,34 +14,9 @@ class Publisher(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def slug(self):
-        return slugify(self.name)
-
     def save(self, *args, **kwargs):
-        self.clean_fields()
+        self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    def clean_fields(self, exclude=None):
-        super().clean_fields(exclude=exclude)
-
-        # self.objects.get(name__unn)
-        raise ValidationError(
-            _('There is already a publisher with this name.')
-        )
-
-        # if self.status == 'draft' and self.pub_date is not None:
-        #     if exclude and 'status' in exclude:
-        #         raise ValidationError(
-        #             _('Draft entries may not have a publication date.')
-        #         )
-        #     else:
-        #         raise ValidationError({
-        #             'status': _(
-        #                 'Set status to draft if there is not a '
-        #                 'publication date.'
-        #              ),
-        #         })
 
 
 class AgeClassification(models.Model):
