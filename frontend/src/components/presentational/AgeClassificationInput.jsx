@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
-// import OptionEmpty from "./OptionEmpty.jsx";
+import {Typeahead} from "react-bootstrap-typeahead";
 
 export default class AgeClassificationInput extends Component {
     constructor(props) {
@@ -10,6 +10,8 @@ export default class AgeClassificationInput extends Component {
             isLoaded: false,
             list: []
         };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -31,26 +33,35 @@ export default class AgeClassificationInput extends Component {
             )
     }
 
+    handleChange(selected) {
+        this.setState({selected}, () => {
+            this.props.onChange();
+        });
+    }
+
     render() {
-        const {error, isLoaded, list} = this.state;
+        const {error, isLoaded, list, selected} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
-                <Form.Group controlId="form_age_classification">
+                <Form.Group controlId="age_classification">
                     <Form.Label column="">Classificação etária</Form.Label>
-                    <Form.Control name="age_classification" defaultValue={this.props.value} as="select" multiple>
-                        {/*<OptionEmpty/>*/}
-                        {list.map(item => (
-                            <option key={item.id} value={item.id}>
-                                {item.name}
-                            </option>
-                        ))}
-                    </Form.Control>
+                    <Typeahead
+                        id="age_classification"
+                        labelKey="name"
+                        options={list}
+                        onChange={this.handleChange}
+                        selected={selected}
+                        multiple
+                        allowNew
+                        newSelectionPrefix="Nova classificação: "
+                        placeholder="Nome da classificação"
+                    />
                 </Form.Group>
-            );
+            )
         }
     }
 }

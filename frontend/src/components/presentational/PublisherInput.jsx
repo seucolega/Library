@@ -10,6 +10,8 @@ export default class PublisherInput extends Component {
             isLoaded: false,
             list: []
         };
+
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -17,16 +19,9 @@ export default class PublisherInput extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    const list = [];
-                    result.results.map(item => (
-                        list.push({
-                            id: item.id,
-                            label: item.name
-                        })
-                    ));
                     this.setState({
                         isLoaded: true,
-                        list: list
+                        list: result.results
                     });
                 },
                 (error) => {
@@ -38,24 +33,29 @@ export default class PublisherInput extends Component {
             )
     }
 
+    handleChange(selected) {
+        this.setState({selected}, () => {
+            this.props.onChange();
+        });
+    }
+
     render() {
-        const {error, isLoaded} = this.state;
+        const {error, isLoaded, list, selected} = this.state;
+
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
-                <Form.Group controlId="form_publisher">
+                <Form.Group controlId="publisher">
                     <Form.Label column="">Editora</Form.Label>
                     <Typeahead
-                        id="form_publisher"
-                        options={this.state.list}
-                        onChange={(selected) => {
-                            this.setState({selected});
-                            // this.props.onChange()
-                        }}
-                        selected={this.state.selected}
+                        id="publisher"
+                        labelKey="name"
+                        options={list}
+                        onChange={this.handleChange}
+                        selected={selected}
                         allowNew
                         newSelectionPrefix="Nova editora: "
                         placeholder="Nome da editora"

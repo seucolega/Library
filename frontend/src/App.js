@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css"
+import "react-bootstrap-typeahead/css/Typeahead.min.css"
 import "./App.css"
 import React from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
