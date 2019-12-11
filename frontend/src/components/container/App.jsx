@@ -4,7 +4,12 @@ import {BrowserRouter as Router} from "react-router-dom";
 
 import Sidebar from "./Sidebar.jsx";
 import Main from "./Main.jsx";
+import cookie from "react-cookies";
 
+export const FETCH_HEADERS = {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': cookie.load("csrftoken")
+};
 
 export default class App extends Component {
     render() {

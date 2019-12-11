@@ -5,16 +5,17 @@ import PublisherInput from "../presentational/PublisherInput";
 import AgeClassificationInput from "../presentational/AgeClassificationInput";
 import TextualClassificationInput from "../presentational/TextualClassificationInput";
 import cookie from "react-cookies";
+import {FETCH_HEADERS} from "./App";
 
 export default class BookItemForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            original_title: '',
-            publisher: null,
-            age_classification: null,
-            textual_classification: null,
+            title: this.props.item.title,
+            original_title: this.props.item.original_title,
+            publisher: this.props.item.publisher,
+            age_classification: this.props.item.age_classification,
+            textual_classification: this.props.item.age_classification,
         };
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -37,21 +38,86 @@ export default class BookItemForm extends Component {
     }
 
     handlePublisherChange() {
-        this.setState({publisher: this._publisher.current.state.selected});
+        const list = this._publisher.current.state.selected;
+
+        const item = typeof list[0] == 'undefined' ? null : list[0];
+        if (item) {
+            if (item.customOption) {
+                fetch('/api/book/publisher/', {
+                    method: 'POST',
+                    body: JSON.stringify({name: item.name}),
+                    headers: FETCH_HEADERS
+                })
+                    .then(res => res.json())
+                    .then(result => this.setState({publisher: result.id}))
+            } else {
+                this.setState({publisher: item.id});
+            }
+        }
     }
 
     handleAgeClassificationChange() {
-        this.setState({age_classification: this._ageClassification.current.state.selected});
+        const list = this._ageClassification.current.state.selected;
+
+        const toSet = list.filter(({id}) => {
+            return !isNaN(id);
+        });
+        this.setState({
+            age_classification: toSet.map(({id}) => {
+                return id
+            })
+        });
+
+        const toInclude = list.filter(({customOption, name}) => {
+            return customOption === true && name;
+        });
+
+        for (let item of toInclude) {
+            fetch('/api/book/age_classification/', {
+                method: 'POST',
+                body: JSON.stringify({name: item.name}),
+                headers: FETCH_HEADERS
+            })
+                .then(res => res.json())
+                .then(result => this.setState({
+                    age_classification: [...this.state.age_classification, result.id]
+                }))
+        }
     }
 
     handleTextualClassificationChange() {
-        this.setState({textual_classification: this._textualClassification.current.state.selected});
+        const list = this._textualClassification.current.state.selected;
+
+        const toSet = list.filter(({id}) => {
+            return !isNaN(id);
+        });
+        this.setState({
+            textual_classification: toSet.map(({id}) => {
+                return id
+            })
+        });
+
+        const toInclude = list.filter(({customOption, name}) => {
+            return customOption === true && name;
+        });
+
+        for (let item of toInclude) {
+            fetch('/api/book/textual_classification/', {
+                method: 'POST',
+                body: JSON.stringify({name: item.name}),
+                headers: FETCH_HEADERS
+            })
+                .then(res => res.json())
+                .then(result => this.setState({
+                    textual_classification: [...this.state.textual_classification, result.id]
+                }))
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
-        let url = `/api/book/book/`;
+        let url = '/api/book/book/';
         const method = this.props.item.id ? 'PUT' : 'POST';
         if (method === 'PUT') {
             url += `${this.props.item.id}/`;

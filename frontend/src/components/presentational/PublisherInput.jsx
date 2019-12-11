@@ -19,9 +19,14 @@ export default class PublisherInput extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    const list = result.results;
+                    const selected = list.filter((item) => {
+                        return this.props.value === item.id
+                    });
                     this.setState({
                         isLoaded: true,
-                        list: result.results
+                        list: list,
+                        defaultSelected: selected
                     });
                 },
                 (error) => {
@@ -40,7 +45,7 @@ export default class PublisherInput extends Component {
     }
 
     render() {
-        const {error, isLoaded, list, selected} = this.state;
+        const {error, isLoaded, list, defaultSelected} = this.state;
 
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -55,11 +60,10 @@ export default class PublisherInput extends Component {
                         labelKey="name"
                         options={list}
                         onChange={this.handleChange}
-                        selected={selected}
+                        defaultSelected={defaultSelected}
                         allowNew
                         newSelectionPrefix="Nova editora: "
-                        placeholder="Nome da editora"
-                    />
+                        placeholder="Nome da editora"/>
                 </Form.Group>
             )
         }

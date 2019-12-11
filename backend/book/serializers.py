@@ -50,8 +50,9 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         # depth = 2
-        fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification',
-                  'person_set']
+        # fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification',
+        #           'person_set']
+        fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification']
 
     # def to_representation(self, value):
     #     data = super().to_representation(value)
