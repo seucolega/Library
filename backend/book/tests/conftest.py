@@ -1,7 +1,7 @@
 import pytest
 
 from book.models import PersonProfile, PersonType, AgeClassification, TextualClassification, Book, \
-    Publisher, Person
+    Publisher
 
 
 @pytest.fixture

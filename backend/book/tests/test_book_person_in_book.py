@@ -1,7 +1,4 @@
 import pytest
-from attr import fields
-
-from book.models import Person
 
 
 @pytest.mark.django_db
