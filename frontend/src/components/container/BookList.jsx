@@ -4,6 +4,7 @@ import BookListItem from "./BookListItem";
 import PageBook from "./PageBook";
 import PageHeader from "../presentational/PageHeader";
 import {Link} from "react-router-dom";
+import {API_URL} from "./App";
 
 export default class BookList extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class BookList extends Component {
     }
 
     componentDidMount() {
-        fetch("/api/book/book/")
+        fetch(`${API_URL}/book/book/`)
             .then(res => res.json())
             .then(
                 (result) => {

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
+import {API_URL} from "../container/App";
 
 export default class TextualClassificationInput extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class TextualClassificationInput extends Component {
     }
 
     componentDidMount() {
-        fetch("/api/book/textual_classification/")
+        fetch(`${API_URL}/book/textual_classification/`)
             .then(res => res.json())
             .then(
                 (result) => {

@@ -11,6 +11,8 @@ export const FETCH_HEADERS = {
     'X-CSRFToken': cookie.load("csrftoken")
 };
 
+export const API_URL = '/api';
+
 export default class App extends Component {
     render() {
         return (
