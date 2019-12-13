@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import BookItemForm from "./BookItemForm";
 import PageHeader from "../presentational/PageHeader";
+import {API_URL} from "./App";
 
 export default class BookItem extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class BookItem extends Component {
     }
 
     componentDidMount() {
-        fetch(`/api/book/book/${this.props.id}/`)
+        fetch(`${API_URL}/book/book/${this.props.id}/`)
             .then(res => res.json())
             .then(
                 (result) => {

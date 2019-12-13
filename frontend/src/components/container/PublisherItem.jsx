@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import PageHeader from "../presentational/PageHeader";
 import PublisherItemForm from "./PublisherItemForm";
+import {API_URL} from "./App";
 
 export default class PublisherItem extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class PublisherItem extends Component {
     }
 
     componentDidMount() {
-        fetch(`/api/book/publisher/${this.props.id}/`)
+        fetch(`${API_URL}/book/publisher/${this.props.id}/`)
             .then(res => res.json())
             .then(
                 (result) => {
