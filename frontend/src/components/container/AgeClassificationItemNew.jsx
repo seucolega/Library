@@ -17,7 +17,7 @@ export default class AgeClassificationItemNew extends Component {
     render() {
         return (
             <div>
-                <PageHeader title="Novo livro"/>
+                <PageHeader title="Nova classificação etária"/>
                 <AgeClassificationItemForm item={this.state.item}/>
             </div>
         )

@@ -44,7 +44,7 @@ export default class AgeClassificationList extends Component {
             return (
                 <div>
                     <PageHeader title="Classificação etária" buttons={
-                        <Link to={`/publisher/new`} className="btn btn-xs btn-info">Nova classificação</Link>
+                        <Link to={`/age_classification/new`} className="btn btn-xs btn-info">Nova classificação</Link>
                     }/>
                     <ListGroup>
                         {list.map(item => (

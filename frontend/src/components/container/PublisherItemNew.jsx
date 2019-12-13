@@ -17,7 +17,7 @@ export default class PublisherItemNew extends Component {
     render() {
         return (
             <div>
-                <PageHeader title="Novo livro"/>
+                <PageHeader title="Nova editora"/>
                 <PublisherItemForm item={this.state.item}/>
             </div>
         )
