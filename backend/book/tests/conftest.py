@@ -1,7 +1,5 @@
 import pytest
-
-from book.models import PersonProfile, PersonType, AgeClassification, TextualClassification, Book, \
-    Publisher
+from book.models import AgeClassification, Book, PersonProfile, PersonType, Publisher, TextualClassification
 
 
 @pytest.fixture
@@ -39,11 +37,7 @@ def supply_book(supply_book_publisher, supply_book_age_classification, supply_bo
     supply_book_publisher.save()
     supply_book_age_classification.save()
     supply_book_textual_classification.save()
-    book = Book(
-        title='title 1',
-        original_title='original title 1',
-        publisher=supply_book_publisher,
-    )
+    book = Book(title='title 1', original_title='original title 1', publisher=supply_book_publisher,)
     book.save()
     book.age_classification.add(supply_book_age_classification)
     book.textual_classification.add(supply_book_textual_classification)

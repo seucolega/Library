@@ -1,10 +1,7 @@
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import BookForm
 from .models import Book
-
 
 # from django.http.response import HttpResponse
 # from django.core import serializers
@@ -12,11 +9,9 @@ from .models import Book
 
 def book_list(request):
     search_for = request.POST.get('search', '')
-    return render(request, 'book_list.html',
-                  {
-                      'list': Book.objects.filter(title__icontains=search_for),
-                      'search_for': search_for
-                  })
+    return render(
+        request, 'book_list.html', {'list': Book.objects.filter(title__icontains=search_for), 'search_for': search_for}
+    )
     # return render(request, 'book_list.html', {'list': Book.objects.all()})
 
 
@@ -43,6 +38,7 @@ def book_remove(request, book_id):
         book.delete()
         return redirect('book_list')
     return render(request, 'book_remove.html', {'model': book})
+
 
 # def book_list_json(request):
 #     data = serializers.serialize('json', Book.objects.all())

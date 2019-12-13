@@ -1,8 +1,13 @@
+from book.models import AgeClassification, Book, PersonType, Publisher, TextualClassification
 from rest_framework import viewsets
 
-from book.models import Publisher, AgeClassification, TextualClassification, PersonType, Book
-from .serializers import PublisherSerializer, AgeClassificationSerializer, TextualClassificationSerializer, \
-    PersonTypeSerializer, BookSerializer
+from .serializers import (
+    AgeClassificationSerializer,
+    BookSerializer,
+    PersonTypeSerializer,
+    PublisherSerializer,
+    TextualClassificationSerializer,
+)
 
 
 class PublisherViewSet(viewsets.ModelViewSet):

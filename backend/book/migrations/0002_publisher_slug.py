@@ -10,9 +10,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='publisher',
-            name='slug',
-            field=models.SlugField(default=''),
-            preserve_default=False,
+            model_name='publisher', name='slug', field=models.SlugField(default=''), preserve_default=False,
         ),
     ]

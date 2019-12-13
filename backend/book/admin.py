@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, Publisher, AgeClassification, TextualClassification, PersonProfile, \
-    PersonType, Person
+from .models import AgeClassification, Book, Person, PersonProfile, PersonType, Publisher, TextualClassification
 
 admin.site.register(Publisher)
 admin.site.register(AgeClassification)
