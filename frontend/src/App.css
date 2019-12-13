@@ -43,3 +43,7 @@ body {
 #main .container-fluid {
     max-width: var(--breakpoint-lg);
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
