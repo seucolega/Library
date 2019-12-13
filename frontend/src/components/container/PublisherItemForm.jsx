@@ -8,9 +8,7 @@ export default class PublisherItemForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fields: {
-                name: this.props.item.name,
-            },
+            name: this.props.item.name,
             error: null,
             isLoading: false
         };
