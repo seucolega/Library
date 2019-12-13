@@ -17,9 +17,15 @@ export default class Sidebar extends Component {
                     <LinkContainer to="/publisher">
                         <ListGroup.Item action>Editoras</ListGroup.Item>
                     </LinkContainer>
-                    <LinkContainer to="/person">
-                        <ListGroup.Item action>Pessoas</ListGroup.Item>
+                    <LinkContainer to="/age_classification">
+                        <ListGroup.Item action>Classificação etária</ListGroup.Item>
                     </LinkContainer>
+                    <LinkContainer to="/textual_classification">
+                        <ListGroup.Item action>Classificação textual</ListGroup.Item>
+                    </LinkContainer>
+                    {/*<LinkContainer to="/person">*/}
+                    {/*    <ListGroup.Item action>Pessoas</ListGroup.Item>*/}
+                    {/*</LinkContainer>*/}
                 </ListGroup>
             </div>
         )

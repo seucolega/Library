@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import {API_URL, FETCH_HEADERS} from "./App";
 
-export default class PublisherItemForm extends Component {
+export default class AgeClassificationItemForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +31,7 @@ export default class PublisherItemForm extends Component {
 
         const method = this.props.item.id ? 'PUT' : 'POST';
 
-        let url = `${API_URL}/book/publisher/`;
+        let url = `${API_URL}/book/age_classification/`;
         if (method === 'PUT') {
             url += `${this.props.item.id}/`;
         }
@@ -81,7 +81,7 @@ export default class PublisherItemForm extends Component {
                     <Form.Control name="name"
                                   value={this.state.name}
                                   onChange={this.handleNameChange}
-                                  placeholder="Nome da editora"/>
+                                  placeholder="Classificação"/>
                 </Form.Group>
 
                 <div className="mt-2">

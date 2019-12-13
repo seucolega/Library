@@ -1,29 +1,26 @@
 import React, {Component} from "react";
-import ListGroup from "react-bootstrap/ListGroup";
-import BookListItem from "./BookListItem";
-import PageBook from "./Book";
 import PageHeader from "../presentational/PageHeader";
-import {Link} from "react-router-dom";
+import AgeClassificationItemForm from "./AgeClassificationItemForm";
 import {API_URL} from "./App";
 
-export default class BookList extends Component {
+export default class AgeClassificationItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
-            list: []
+            item: null
         };
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/book/`)
+        fetch(`${API_URL}/book/age_classification/${this.props.id}/`)
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        list: result.results
+                        item: result
                     });
                 },
                 (error) => {
@@ -36,23 +33,16 @@ export default class BookList extends Component {
     }
 
     render() {
-        const {error, isLoaded, list} = this.state;
+        const {error, isLoaded, item} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            console.log(PageBook.verboseName);
             return (
                 <div>
-                    <PageHeader title="Livros" buttons={
-                        <Link to={`/book/new`} className="btn btn-xs btn-info">Novo livro</Link>
-                    }/>
-                    <ListGroup>
-                        {list.map(item => (
-                            <BookListItem key={item.id} item={item}/>
-                        ))}
-                    </ListGroup>
+                    <PageHeader title="Editar classificação"/>
+                    <AgeClassificationItemForm item={item}/>
                 </div>
             );
         }

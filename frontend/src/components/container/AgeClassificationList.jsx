@@ -1,12 +1,11 @@
 import React, {Component} from "react";
-import ListGroup from "react-bootstrap/ListGroup";
-import BookListItem from "./BookListItem";
-import PageBook from "./Book";
 import PageHeader from "../presentational/PageHeader";
+import ListGroup from "react-bootstrap/ListGroup";
+import AgeClassificationListItem from "./AgeClassificationListItem";
 import {Link} from "react-router-dom";
 import {API_URL} from "./App";
 
-export default class BookList extends Component {
+export default class AgeClassificationList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +16,7 @@ export default class BookList extends Component {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/book/`)
+        fetch(`${API_URL}/book/age_classification/`)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -42,15 +41,14 @@ export default class BookList extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            console.log(PageBook.verboseName);
             return (
                 <div>
-                    <PageHeader title="Livros" buttons={
-                        <Link to={`/book/new`} className="btn btn-xs btn-info">Novo livro</Link>
+                    <PageHeader title="Classificação etária" buttons={
+                        <Link to={`/publisher/new`} className="btn btn-xs btn-info">Nova classificação</Link>
                     }/>
                     <ListGroup>
                         {list.map(item => (
-                            <BookListItem key={item.id} item={item}/>
+                            <AgeClassificationListItem key={item.id} item={item}/>
                         ))}
                     </ListGroup>
                 </div>
