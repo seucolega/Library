@@ -4,8 +4,8 @@ import Button from "react-bootstrap/Button";
 import PublisherInput from "../presentational/PublisherInput";
 import AgeClassificationInput from "../presentational/AgeClassificationInput";
 import TextualClassificationInput from "../presentational/TextualClassificationInput";
-import cookie from "react-cookies";
 import {FETCH_HEADERS} from "./App";
+import Alert from "react-bootstrap/Alert";
 
 export default class BookItemForm extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ export default class BookItemForm extends Component {
             original_title: this.props.item.original_title,
             publisher: this.props.item.publisher,
             age_classification: this.props.item.age_classification,
-            textual_classification: this.props.item.age_classification,
+            textual_classification: this.props.item.textual_classification,
         };
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -27,6 +27,7 @@ export default class BookItemForm extends Component {
         this.handleTextualClassificationChange = this.handleTextualClassificationChange.bind(this);
         this._textualClassification = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.goBack = this.goBack.bind(this);
     }
 
     handleTitleChange(event) {
@@ -114,8 +115,13 @@ export default class BookItemForm extends Component {
         }
     }
 
+    goBack() {
+        window.history.back();
+    }
+
     handleSubmit(event) {
         event.preventDefault();
+        this.setState({isLoading: true});
 
         let url = '/api/book/book/';
         const method = this.props.item.id ? 'PUT' : 'POST';
@@ -123,19 +129,50 @@ export default class BookItemForm extends Component {
             url += `${this.props.item.id}/`;
         }
 
+        const payload = {
+            title: this.state.title,
+            original_title: this.state.original_title,
+            publisher: this.state.publisher,
+            age_classification: this.state.age_classification,
+            textual_classification: this.state.textual_classification
+        };
+
         fetch(url, {
             method: method,
-            body: JSON.stringify(this.state),
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': cookie.load("csrftoken")
-            }
-        });
+            body: JSON.stringify(payload),
+            headers: FETCH_HEADERS
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        this.setState({
+                            isLoading: false,
+                            error: result.error
+                        });
+                    } else {
+                        this.goBack();
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        isLoading: false,
+                        error: error
+                    });
+                }
+            );
     }
 
     render() {
+        let alert;
+        if (this.state.error) {
+            alert = <Alert variant="danger">{this.state.error}</Alert>
+        }
+
         return (
             <Form onSubmit={this.handleSubmit}>
+                {alert}
+
                 <Form.Group controlId="title">
                     <Form.Label column="">Título</Form.Label>
                     <Form.Control name="title"
@@ -164,9 +201,14 @@ export default class BookItemForm extends Component {
                                             value={this.state.textual_classification}
                                             onChange={this.handleTextualClassificationChange}/>
 
-                <Button variant="primary" type="submit" className="mt-2">
-                    Salvar
-                </Button>
+                <div className="mt-2">
+                    <Button variant="primary" type="submit" disabled={this.state.isLoading}>
+                        Salvar
+                    </Button>
+                    <Button variant="secondary" className="ml-2" disabled={this.state.isLoading} onClick={this.goBack}>
+                        Cancelar
+                    </Button>
+                </div>
             </Form>
         )
     }

@@ -1,84 +1,100 @@
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import cookie from "react-cookies";
-import {stringifyFormData} from "./Main";
 import Alert from "react-bootstrap/Alert";
+import {API_URL, FETCH_HEADERS} from "./App";
 
 export default class PublisherItemForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            fields: {
+                name: this.props.item.name,
+            },
             error: null,
             isLoading: false
         };
+        this.handleNameChange = this.handleNameChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.goBack = this.goBack.bind(this);
+    }
+
+    goBack() {
+        window.history.back();
+    }
+
+    handleNameChange(event) {
+        this.setState({name: event.target.value});
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        this.setState({isLoading: true});
 
         const method = this.props.item.id ? 'PUT' : 'POST';
 
-        let url = `/api/book/publisher/`;
+        let url = `${API_URL}/book/publisher/`;
         if (method === 'PUT') {
             url += `${this.props.item.id}/`;
         }
 
-        const data = new FormData(event.target);
-
-        this.setState({
-            isLoading: true,
-            res: stringifyFormData(data)
-        });
+        const payload = {
+            title: this.state.title
+        };
 
         fetch(url, {
             method: method,
-            body: data,
-            headers: {
-                'X-CSRFToken': cookie.load("csrftoken")
-            }
+            body: JSON.stringify(payload),
+            headers: FETCH_HEADERS
         })
             .then(res => res.json())
             .then(
-                (result) => {
-                    this.setState({
-                        isLoading: false,
-                        error: result.error || true
-                    });
+                result => {
+                    if (result.error) {
+                        this.setState({
+                            isLoading: false,
+                            error: result.error
+                        });
+                    } else {
+                        this.goBack();
+                    }
                 },
-                (error) => {
+                error => {
                     this.setState({
                         isLoading: false,
-                        error: true
+                        error: error
                     });
                 }
             )
     }
 
     render() {
-        if (this.state.error === true) {
-            window.history.back();
-        }
-
         let alert;
         if (this.state.error) {
             alert = <Alert variant="danger">{this.state.error}</Alert>
         }
 
         return (
-            <div>
+            <Form onSubmit={this.handleSubmit}>
                 {alert}
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Group controlId="form_name">
-                        <Form.Label column="">Nome</Form.Label>
-                        <Form.Control name="name" defaultValue={this.props.item.name} placeholder="Nome da editora"/>
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="mt-2" disabled={this.state.isLoading}>
+
+                <Form.Group controlId="form_name">
+                    <Form.Label column="">Nome</Form.Label>
+                    <Form.Control name="name"
+                                  value={this.state.name}
+                                  onChange={this.handleNameChange}
+                                  placeholder="Nome da editora"/>
+                </Form.Group>
+
+                <div className="mt-2">
+                    <Button variant="primary" type="submit" disabled={this.state.isLoading}>
                         Salvar
                     </Button>
-                </Form>
-            </div>
+                    <Button variant="secondary" className="ml-2" disabled={this.state.isLoading} onClick={this.goBack}>
+                        Cancelar
+                    </Button>
+                </div>
+            </Form>
         )
     }
 }
