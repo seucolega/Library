@@ -5,6 +5,7 @@ import Book from "./Book";
 // import Person from "./Person";
 import Publisher from "./Publisher";
 import AgeClassification from "./AgeClassification";
+import TextualClassification from "./TextualClassification";
 
 export default class Main extends Component {
     render() {
@@ -52,8 +53,8 @@ export default class Main extends Component {
                         <Route path="/publisher/:id" component={Publisher}/>
                         <Route exact path="/age_classification" component={AgeClassification}/>
                         <Route path="/age_classification/:id" component={AgeClassification}/>
-                        {/*<Route exact path="/textual_classification" component={TextualClassification}/>*/}
-                        {/*<Route path="/textual_classification/:id" component={TextualClassification}/>*/}
+                        <Route exact path="/textual_classification" component={TextualClassification}/>
+                        <Route path="/textual_classification/:id" component={TextualClassification}/>
                         {/*<Route exact path="/person" component={PagePerson}/>*/}
                         {/*<Route path="/person/:id" component={PagePerson}/>*/}
                     </Switch>
