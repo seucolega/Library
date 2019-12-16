@@ -20,6 +20,8 @@ router.register(r'publisher', views.PublisherViewSet)
 router.register(r'age_classification', views.AgeClassificationViewSet)
 router.register(r'textual_classification', views.TextualClassificationViewSet)
 router.register(r'person_type', views.PersonTypeViewSet)
+router.register(r'person_profile', views.PersonProfileViewSet)
+router.register(r'person', views.PersonViewSet)
 router.register(r'book', views.BookViewSet)
 
 urlpatterns = [

@@ -35,11 +35,17 @@ class PersonTypeSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class PersonProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonType
+        fields = ['id', 'name']
+
+
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         # depth = 2
-        fields = ['person', 'type']
+        fields = ['book', 'person', 'type']
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -48,9 +54,15 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         # depth = 2
-        # fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification',
-        #           'person_set']
-        fields = ['id', 'title', 'original_title', 'publisher', 'age_classification', 'textual_classification']
+        fields = [
+            'id',
+            'title',
+            'original_title',
+            'publisher',
+            'age_classification',
+            'textual_classification',
+            'person_set',
+        ]
 
     # def to_representation(self, value):
     #     data = super().to_representation(value)

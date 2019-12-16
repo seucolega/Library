@@ -206,5 +206,9 @@ class Person(models.Model):
     def type_verbose(self):
         return ', '.join([t.name for t in self.type.only('name')])
 
-    def __str__(self):
+    @property
+    def title(self):
         return f'{self.person.name} ({self.type_verbose})'
+
+    def __str__(self):
+        return self.title
