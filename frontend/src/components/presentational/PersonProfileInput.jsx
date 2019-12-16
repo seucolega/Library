@@ -1,9 +1,9 @@
 import React, {Component} from "react";
+import {API_URL, FETCH_HEADERS} from "../container/App";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
-import {API_URL, FETCH_HEADERS} from "../container/App";
 
-export default class PersonTypeInput extends Component {
+export default class PersonProfileInput extends Component {
     constructor(props) {
         super(props);
 
@@ -39,7 +39,7 @@ export default class PersonTypeInput extends Component {
         });
 
         for (let item of toInclude) {
-            fetch(`${API_URL}/book/person_type/`, {
+            fetch(`${API_URL}/book/person_profile/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
                 headers: FETCH_HEADERS
@@ -57,7 +57,7 @@ export default class PersonTypeInput extends Component {
     render() {
         return (
             <Form.Group>
-                <Form.Label column="">Participação</Form.Label>
+                <Form.Label column="">Pessoa</Form.Label>
                 <Typeahead
                     ref={this._input}
                     id={this.props.id}
@@ -65,10 +65,9 @@ export default class PersonTypeInput extends Component {
                     options={this.state.list}
                     onChange={this.handleChange.bind(this)}
                     defaultSelected={this.props.selected}
-                    multiple
                     allowNew
-                    newSelectionPrefix="Nova participação: "
-                    placeholder="Participação"/>
+                    newSelectionPrefix="Nova pessoa: "
+                    placeholder="Nome da pessoa"/>
             </Form.Group>
         )
     }
