@@ -64,7 +64,8 @@ export default class PublisherInput extends Component {
                         defaultSelected={defaultSelected}
                         allowNew
                         newSelectionPrefix="Nova editora: "
-                        placeholder="Nome da editora"/>
+                        placeholder="Nome da editora"
+                        emptyLabel="Nenhum registro encontrado"/>
                 </Form.Group>
             )
         }

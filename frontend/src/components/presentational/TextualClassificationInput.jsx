@@ -66,7 +66,7 @@ export default class TextualClassificationInput extends Component {
                         allowNew
                         newSelectionPrefix="Nova classificação: "
                         placeholder="Nome da classificação"
-                    />
+                        emptyLabel="Nenhum registro encontrado"/>
                 </Form.Group>
             )
         }
