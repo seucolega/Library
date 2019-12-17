@@ -67,7 +67,8 @@ export default class PersonProfileInput extends Component {
                     defaultSelected={this.props.selected}
                     allowNew
                     newSelectionPrefix="Nova pessoa: "
-                    placeholder="Nome da pessoa"/>
+                    placeholder="Nome da pessoa"
+                    emptyLabel="Nenhum registro encontrado"/>
             </Form.Group>
         )
     }

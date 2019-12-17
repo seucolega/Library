@@ -68,7 +68,8 @@ export default class PersonTypeInput extends Component {
                     multiple
                     allowNew
                     newSelectionPrefix="Nova participação: "
-                    placeholder="Participação"/>
+                    placeholder="Participação"
+                    emptyLabel="Nenhum registro encontrado"/>
             </Form.Group>
         )
     }

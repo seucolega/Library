@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {API_URL} from "../container/App";
 import PersonItemInput from "./PersonItemInput";
+import Button from "react-bootstrap/Button";
 
 export default class PersonInput extends Component {
     constructor(props) {
@@ -14,8 +15,6 @@ export default class PersonInput extends Component {
             personProfileList: [],
             bookPersonList: []
         };
-
-        // this._input = React.createRef();
     }
 
     incrementLoaded() {
@@ -74,15 +73,6 @@ export default class PersonInput extends Component {
                         this.setState({
                             bookPersonList: [...this.state.bookPersonList, item],
                         }, () => {
-                            // let person_profile_list = this.state.person_profile_list;
-                            // person_profile_list.splice(person_profile_list.findIndex(item => item.id === result.person), 1, item);
-                            //
-                            // this.setState({person_profile_list: person_profile_list});
-                            //
-                            // if (this.state.book_person_list.length >= this.props.value.length) {
-                            //     this._input.current.setState({selected: this.state.book_person_list});
-                            // }
-
                             this.incrementLoaded();
                         });
                     },
@@ -96,84 +86,51 @@ export default class PersonInput extends Component {
         }
     }
 
-    // handleChange(selected) {
-    //     this.setState({selected}, () => {
-    //         this.props.onChange();
-    //     });
-    //
-    //     console.log(selected);
-    // }
-    //
+    handleRemove(idToRemove) {
+        this.setState({
+            bookPersonList: this.state.bookPersonList.filter(({id}) => {
+                return id !== idToRemove
+            })
+        });
+    }
+
+    handleAdd() {
+        this.setState({
+            bookPersonList: [...this.state.bookPersonList, {
+                book: this.props.bookId,
+                person: null,
+                type: []
+            }]
+        });
+    }
+
     render() {
         const {error, isLoaded, bookPersonList, personProfileList, personTypeList} = this.state;
-
-        // this.addEventToTokens();
 
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            // return (
-            //     <div>
-            //         <Form.Group controlId="person">
-            //             <Form.Label column="">Pessoas</Form.Label>
-            //             <Typeahead
-            //                 ref={this._input}
-            //                 id="person"
-            //                 labelKey="name"
-            //                 options={person_profile_list}
-            //                 onChange={this.handleChange.bind(this)}
-            //                 multiple
-            //                 allowNew
-            //                 newSelectionPrefix="Nova pessoa: "
-            //                 placeholder="Pessoa"
-            //             />
-            //         </Form.Group>
-            //     </div>
-            // )
             return (
-                <div>
-                    {bookPersonList.map((bookPerson, index) => (
-                        <div key={index}>
-                            <p>ID: {bookPerson.id}</p>
-                            <PersonItemInput bookPerson={bookPerson}
-                                             personProfileList={personProfileList}
-                                             personTypeList={personTypeList}/>
-
-                            {/*<div key={index}>*/}
-                            {/*    <Form.Group controlId={`bookPerson-${index}`}>*/}
-                            {/*        <Form.Label column="">Pessoa</Form.Label>*/}
-                            {/*        <Typeahead*/}
-                            {/*            id={`bookPerson-${index}`}*/}
-                            {/*            labelKey="name"*/}
-                            {/*            options={person_profile_list}*/}
-                            {/*            // onChange={this.handleChange}*/}
-                            {/*            defaultSelected={person_profile_list.filter(({id}) => {*/}
-                            {/*                return id === person*/}
-                            {/*            })}*/}
-                            {/*            allowNew*/}
-                            {/*            newSelectionPrefix="Nova pessoa: "*/}
-                            {/*            placeholder="Nome da pessoa"/>*/}
-                            {/*    </Form.Group>*/}
-                            {/*    <Form.Group controlId={`bookPersonType-${index}`}>*/}
-                            {/*        <Form.Label column="">Participação</Form.Label>*/}
-                            {/*        <Typeahead*/}
-                            {/*            id={`bookPersonType-${index}`}*/}
-                            {/*            labelKey="name"*/}
-                            {/*            options={person_type_list}*/}
-                            {/*            // onChange={this.handleChange}*/}
-                            {/*            defaultSelected={person_type_list.filter(({id}) => {*/}
-                            {/*                return type.includes(id)*/}
-                            {/*            })}*/}
-                            {/*            allowNew*/}
-                            {/*            newSelectionPrefix="Nova participação: "*/}
-                            {/*            placeholder="Participação"/>*/}
-                            {/*    </Form.Group>*/}
-                            {/*</div>*/}
-                        </div>
-                    ))}
-                </div>
+                <fieldset className="my-4">
+                    <div className="d-flex justify-content-between align-content-end">
+                        <h2 className="mb-0">Pessoas</h2>
+                        <Button variant="primary"
+                                className="ml-2"
+                                onClick={this.handleAdd.bind(this)}>Incluir</Button>
+                    </div>
+                    <div className="border rounded my-3">
+                        {bookPersonList.map((bookPerson, index) => (
+                            <div key={index} className={`pt-3 pb-4 px-3 ${index > 0 ? 'border-top' : ''}`}>
+                                <PersonItemInput bookPerson={bookPerson}
+                                                 personProfileList={personProfileList}
+                                                 personTypeList={personTypeList}
+                                                 onRemove={this.handleRemove.bind(this)}/>
+                            </div>
+                        ))}
+                    </div>
+                </fieldset>
             )
         }
     }
