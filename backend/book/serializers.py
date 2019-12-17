@@ -45,7 +45,7 @@ class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         # depth = 2
-        fields = ['book', 'person', 'type']
+        fields = ['id', 'book', 'person', 'type']
 
 
 class BookSerializer(serializers.ModelSerializer):
