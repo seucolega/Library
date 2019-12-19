@@ -17,7 +17,7 @@ type State = {
 };
 
 export default class AgeClassificationInput extends Component<Props, State> {
-    _input: { current: null | HTMLDivElement };
+    _input: { current: null | React$ElementRef<React$ElementType> };
 
     constructor(props: Props) {
         super(props);

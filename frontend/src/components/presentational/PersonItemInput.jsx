@@ -1,11 +1,30 @@
+// @flow
 import React, {Component} from "react";
 import PersonTypeInput from "./PersonTypeInput";
 import PersonProfileInput from "./PersonProfileInput";
 import {API_URL, FETCH_HEADERS} from "../container/App";
 import Button from "react-bootstrap/Button";
 
-export default class PersonItemInput extends Component {
-    constructor(props) {
+type Props = {
+    personProfileList: Array<Object>,
+    personTypeList: Array<Object>,
+    bookPerson: Object,
+    onRemove: Function
+};
+
+type State = {
+    id: number,
+    person: null | number,
+    type: Array<number>,
+    confirmToRemove?: boolean,
+    isLoading?: boolean
+};
+
+export default class PersonItemInput extends Component<Props, State> {
+    _person: { current: null | React$ElementRef<React$ElementType> };
+    _type: { current: null | React$ElementRef<React$ElementType> };
+
+    constructor(props: Props) { 
         super(props);
 
         this.state = {
@@ -19,7 +38,7 @@ export default class PersonItemInput extends Component {
         this._type = React.createRef();
     }
 
-    handlePersonChange(selected) {
+    handlePersonChange(selected: Array<Object>) {
         this.setState({
             person: typeof selected[0] != 'undefined' ? selected[0] : null
         }, () => {
@@ -27,7 +46,7 @@ export default class PersonItemInput extends Component {
         });
     }
 
-    handleTypeChange(selected) {
+    handleTypeChange(selected: Array<Object>) {
         this.setState({
             type: selected
         }, () => {
@@ -42,7 +61,7 @@ export default class PersonItemInput extends Component {
             return;
         }
 
-        const payload = {
+        const payload: Object = {
             person: person,
             type: type
         };
@@ -62,16 +81,20 @@ export default class PersonItemInput extends Component {
             headers: FETCH_HEADERS
         })
             .then(res => res.json())
-        .then(result => {
-            if (method === 'POST') {
-                console.log(result);
-                this.setState({id: result.id})
-            }            
-        })
+            .then(result => {
+                if (method === 'POST') {
+                    console.log(result);
+                    this.setState({id: result.id})
+                }
+            })
     }
 
-    handleRemove(action) {
+    handleRemove(action: void | string) {
         const id = this.state.id;
+
+        this.setState({
+            isLoading: true
+        });
 
         if (this.state.confirmToRemove && action === 'remove') {
             fetch(`${API_URL}/book/person/${id}/`, {
@@ -86,7 +109,7 @@ export default class PersonItemInput extends Component {
         this.setState({confirmToRemove: !this.state.confirmToRemove});
     }
 
-    handleRemoveToParent(id) {
+    handleRemoveToParent(id: number) {
         if (typeof this.props.onRemove === "function") {
             this.props.onRemove(id);
         }
@@ -99,7 +122,7 @@ export default class PersonItemInput extends Component {
             <div>
                 <div>
                     <PersonProfileInput ref={this._person}
-                                        id={''}
+                                        id={bookPerson.id}
                                         personTypeList={personProfileList}
                                         selected={personProfileList.filter(({id}) => {
                                             return id === bookPerson.person
@@ -107,11 +130,9 @@ export default class PersonItemInput extends Component {
                                         onChange={this.handlePersonChange.bind(this)}/>
 
                     <PersonTypeInput ref={this._type}
-                                     id={''}
+                                     id={bookPerson.id}
                                      personTypeList={personTypeList}
-                                     selected={personTypeList.filter(({id}) => {
-                                         return bookPerson.type.includes(id)
-                                     })}
+                                     selected={bookPerson.type}
                                      onChange={this.handleTypeChange.bind(this)}/>
                 </div>
                 <div className="d-flex justify-content-end mt-3">

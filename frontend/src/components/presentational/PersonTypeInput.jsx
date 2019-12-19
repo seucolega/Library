@@ -7,24 +7,28 @@ import {API_URL, FETCH_HEADERS} from "../container/App";
 type Props = {
     id: number,
     personTypeList: Array<Object>,
-    selected: Array<Object>,
-    onChange?: Function
+    selected: Array<number>,
+    onChange: Function
 };
 
 type State = {
     list: Array<Object>,
-    selected: Array<number>
+    selected: Array<Object>
 };
 
 export default class PersonTypeInput extends Component<Props, State> {
-    _input: { current: null | HTMLDivElement };
+    _input: { current: null | React$ElementRef<React$ElementType> };
 
     constructor(props: Props) {
         super(props);
 
+        const list = this.props.personTypeList;
+
         this.state = {
-            list: this.props.personTypeList,
-            selected: []
+            list: list,
+            selected: list.filter(({id}) => {
+                return this.props.selected.includes(id)
+            })
         };
 
         this._input = React.createRef();
@@ -32,19 +36,20 @@ export default class PersonTypeInput extends Component<Props, State> {
 
     handleOnChangeToParent() {
         if (typeof this.props.onChange === "function") {
-            this.props.onChange(this.state.selected);
+            let selected = this.state.selected.filter(({id}) => {
+                return !isNaN(id);
+            });
+            selected = selected.map(({id}) => {
+                return id
+            });
+
+            this.props.onChange(selected);
         }
     }
 
     handleChange(selected: Array<Object>) {
-        const toSet = selected.filter(({id}) => {
-            return !isNaN(id);
-        });
-
         this.setState({
-            selected: toSet.map(({id}) => {
-                return id
-            })
+            selected: selected
         }, () => {
             this.handleOnChangeToParent();
         });
@@ -70,16 +75,18 @@ export default class PersonTypeInput extends Component<Props, State> {
     }
 
     render() {
+        const controlId = `person_type_${this.props.id}`;
+
         return (
-            <Form.Group controlId={`person_type_${this.props.id}`}>
+            <Form.Group controlId={controlId}>
                 <Form.Label column="">Participação</Form.Label>
                 <Typeahead
                     ref={this._input}
-                    id={`person_type_${this.props.id}`}
+                    id={controlId}
                     labelKey="name"
                     options={this.state.list}
                     onChange={this.handleChange.bind(this)}
-                    defaultSelected={this.props.selected}
+                    defaultSelected={this.state.selected}
                     multiple
                     allowNew
                     newSelectionPrefix="Nova participação: "
