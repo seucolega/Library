@@ -53,33 +53,10 @@ export default class BookItemForm extends Component {
         }
     }
 
-    handleAgeClassificationChange() {
-        const selected = this._ageClassification.current.state.selected;
-
-        const toSet = selected.filter(({id}) => {
-            return !isNaN(id);
-        });
+    handleAgeClassificationChange(selected) {
         this.setState({
-            age_classification: toSet.map(({id}) => {
-                return id
-            })
+            age_classification: selected
         });
-
-        const toInclude = selected.filter(({customOption, name}) => {
-            return customOption === true && name;
-        });
-
-        for (let item of toInclude) {
-            fetch(`${API_URL}/book/age_classification/`, {
-                method: 'POST',
-                body: JSON.stringify({name: item.name}),
-                headers: FETCH_HEADERS
-            })
-                .then(res => res.json())
-                .then(result => this.setState({
-                    age_classification: [...this.state.age_classification, result.id]
-                }))
-        }
     }
 
     handleTextualClassificationChange() {
@@ -122,24 +99,6 @@ export default class BookItemForm extends Component {
                 return id
             })
         });
-
-        const toInclude = selected.filter(({customOption, name}) => {
-            return customOption === true && name;
-        });
-
-        // console.log(this.state.person, toInclude);
-
-        // for (let item of toInclude) {
-        //     fetch(`${API_URL}/book/textual_classification/`, {
-        //         method: 'POST',
-        //         body: JSON.stringify({name: item.name}),
-        //         headers: FETCH_HEADERS
-        //     })
-        //         .then(res => res.json())
-        //         .then(result => this.setState({
-        //             textual_classification: [...this.state.textual_classification, result.id]
-        //         }))
-        // }
     }
 
     goBack() {
@@ -223,7 +182,7 @@ export default class BookItemForm extends Component {
                                 onChange={this.handlePublisherChange.bind(this)}/>
 
                 <AgeClassificationInput ref={this._ageClassification}
-                                        value={this.state.age_classification}
+                                        selected={this.state.age_classification}
                                         onChange={this.handleAgeClassificationChange.bind(this)}/>
 
                 <TextualClassificationInput ref={this._textualClassification}

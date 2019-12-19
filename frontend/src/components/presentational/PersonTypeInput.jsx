@@ -71,11 +71,11 @@ export default class PersonTypeInput extends Component<Props, State> {
 
     render() {
         return (
-            <Form.Group>
+            <Form.Group controlId={`person_type_${this.props.id}`}>
                 <Form.Label column="">Participação</Form.Label>
                 <Typeahead
                     ref={this._input}
-                    id={this.props.id}
+                    id={`person_type_${this.props.id}`}
                     labelKey="name"
                     options={this.state.list}
                     onChange={this.handleChange.bind(this)}
