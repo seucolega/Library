@@ -1,10 +1,25 @@
+// @flow
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
 import {API_URL, FETCH_HEADERS} from "../container/App";
 
-export default class PersonTypeInput extends Component {
-    constructor(props) {
+type Props = {
+    id: number,
+    personTypeList: Array<Object>,
+    selected: Array<Object>,
+    onChange?: Function
+};
+
+type State = {
+    list: Array<Object>,
+    selected: Array<number>
+};
+
+export default class PersonTypeInput extends Component<Props, State> {
+    _input: { current: null | HTMLDivElement };
+
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -21,7 +36,7 @@ export default class PersonTypeInput extends Component {
         }
     }
 
-    handleChange(selected) {
+    handleChange(selected: Array<Object>) {
         const toSet = selected.filter(({id}) => {
             return !isNaN(id);
         });
