@@ -1,18 +1,35 @@
+// @flow
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
-import {API_URL} from "../container/App";
+import {API_URL, FETCH_HEADERS} from "../container/App";
 
-export default class TextualClassificationInput extends Component {
-    constructor(props) {
+type Props = {
+    selected: Array<number>,
+    onChange: Function,
+};
+
+type State = {
+    list: Array<Object>,
+    selected: Array<Object>,
+    isLoaded: boolean,
+    error: void | Object
+};
+
+export default class TextualClassificationInput extends Component<Props, State> {
+    _input: { current: null | React$ElementRef<React$ElementType> };
+
+    constructor(props: Props) {
         super(props);
+
         this.state = {
-            error: null,
+            list: [],
+            selected: [],
             isLoaded: false,
-            list: []
+            error: null
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this._input = React.createRef();
     }
 
     componentDidMount() {
@@ -22,31 +39,66 @@ export default class TextualClassificationInput extends Component {
                 (result) => {
                     const list = result.results;
                     const selected = list.filter((item) => {
-                        return this.props.value.includes(item.id)
+                        return this.props.selected.includes(item.id)
                     });
                     this.setState({
-                        isLoaded: true,
                         list: list,
-                        defaultSelected: selected
+                        selected: selected,
+                        isLoaded: true,
+                        error: false
                     });
                 },
                 (error) => {
                     this.setState({
                         isLoaded: true,
-                        error
+                        error: error
                     });
                 }
             )
     }
 
-    handleChange(selected) {
-        this.setState({selected}, () => {
-            this.props.onChange();
+    handleOnChangeToParent() {
+        if (typeof this.props.onChange === "function") {
+            let selected = this.state.selected.filter(({id}) => {
+                return !isNaN(id);
+            });
+            selected = selected.map(({id}) => {
+                return id
+            });
+
+            this.props.onChange(selected);
+        }
+    }
+
+        handleChange(selected: Array<Object>) {
+        this.setState({
+            selected: selected
+        }, () => {
+            this.handleOnChangeToParent();
         });
+
+        const toInclude = selected.filter(({customOption, name}) => {
+            return customOption === true && name;
+        });
+
+        for (let item of toInclude) {
+            fetch(`${API_URL}/book/textual_classification/`, {
+                method: 'POST',
+                body: JSON.stringify({name: item.name}),
+                headers: FETCH_HEADERS
+            })
+                .then(res => res.json())
+                .then(result => this.setState({
+                    list: [...this.state.list, result],
+                    selected: [...this.state.selected, result]
+                }, () => {
+                    this.handleOnChangeToParent();
+                }))
+        }
     }
 
     render() {
-        const {error, isLoaded, list, defaultSelected} = this.state;
+        const {error, isLoaded, list} = this.state;
 
         if (error) {
             return <div>Error: {error.message}</div>;
@@ -60,8 +112,8 @@ export default class TextualClassificationInput extends Component {
                         id="textual_classification"
                         labelKey="name"
                         options={list}
-                        onChange={this.handleChange}
-                        defaultSelected={defaultSelected}
+                        onChange={this.handleChange.bind(this)}
+                        defaultSelected={this.state.selected}
                         multiple
                         allowNew
                         newSelectionPrefix="Nova classificação: "
