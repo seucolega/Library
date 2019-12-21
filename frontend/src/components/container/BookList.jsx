@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import BookListItem from "./BookListItem";
-import PageBook from "./Book";
 import PageHeader from "../presentational/PageHeader";
 import {Link} from "react-router-dom";
 import {API_URL} from "./App";
@@ -42,7 +41,6 @@ export default class BookList extends Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            console.log(PageBook.verboseName);
             return (
                 <div>
                     <PageHeader title="Livros" buttons={

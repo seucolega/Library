@@ -1,26 +1,41 @@
+// @flow
 import React, {Component} from "react";
 import {API_URL} from "../container/App";
 import PersonItemInput from "./PersonItemInput";
 import Button from "react-bootstrap/Button";
 
-export default class PersonInput extends Component {
-    constructor(props) {
+type Props = {
+    bookId: number,
+    bookPersonList: Array<number>
+};
+
+type State = {
+    personProfileList: Array<Object>,
+    personTypeList: Array<Object>,
+    bookPersonList: Array<Object>,
+    loaded: number,
+    isLoaded: boolean,
+    error: void | Object
+}
+
+export default class PersonInput extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            error: null,
-            loaded: 0,
-            isLoaded: false,
             personTypeList: [],
             personProfileList: [],
-            bookPersonList: []
+            bookPersonList: [],
+            loaded: 0,
+            isLoaded: false,
+            error: null,
         };
     }
 
     incrementLoaded() {
         const loaded = this.state.loaded + 1;
         this.setState({loaded: loaded});
-        if (loaded >= 2 + this.props.value.length) {
+        if (loaded >= 2 + this.props.bookPersonList.length) {
             this.setState({isLoaded: true});
         }
     }
@@ -31,7 +46,6 @@ export default class PersonInput extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        // isLoaded: true,
                         personTypeList: result.results
                     }, () => {
                         this.incrementLoaded();
@@ -39,8 +53,9 @@ export default class PersonInput extends Component {
                 },
                 (error) => {
                     this.setState({
-                        // isLoaded: true,
-                        error
+                        error: error
+                    }, () => {
+                        this.incrementLoaded();
                     });
                 }
             );
@@ -50,7 +65,6 @@ export default class PersonInput extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        // isLoaded: true,
                         personProfileList: result.results
                     }, () => {
                         this.incrementLoaded();
@@ -58,13 +72,12 @@ export default class PersonInput extends Component {
                 },
                 (error) => {
                     this.setState({
-                        // isLoaded: true,
-                        error
+                        error: error
                     });
                 }
             );
 
-        for (let id of this.props.value) {
+        for (let id of this.props.bookPersonList) {
             fetch(`${API_URL}/book/person/${id}/`)
                 .then(res => res.json())
                 .then(
@@ -78,15 +91,14 @@ export default class PersonInput extends Component {
                     },
                     (error) => {
                         this.setState({
-                            // isLoaded: true,
-                            error
+                            error: error
                         });
                     }
                 )
         }
     }
 
-    handleRemove(idToRemove) {
+    handleRemove(idToRemove: number) {
         this.setState({
             bookPersonList: this.state.bookPersonList.filter(({id}) => {
                 return id !== idToRemove
@@ -111,6 +123,8 @@ export default class PersonInput extends Component {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
             return <div>Loading...</div>;
+        } else if (!this.props.bookId) {
+            return <div>Oops...</div>;
         } else {
             return (
                 <fieldset className="my-4">

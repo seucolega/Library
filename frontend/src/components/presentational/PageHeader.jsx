@@ -1,6 +1,12 @@
+// @flow
 import React, {Component} from "react";
 
-export default class PageHeader extends Component {
+type Props = {
+    title: string,
+    buttons?: React$Element<React$ElementType>
+}
+
+export default class PageHeader extends Component<Props> {
     render() {
         return (
             <div className="mb-4 d-sm-flex justify-content-sm-between align-items-sm-end">

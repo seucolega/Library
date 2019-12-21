@@ -18,6 +18,9 @@ export default class BookItem extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    result.person = result.person_set;
+                    delete result.person_set;
+
                     this.setState({
                         isLoaded: true,
                         item: result

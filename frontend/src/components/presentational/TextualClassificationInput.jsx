@@ -16,7 +16,7 @@ type State = {
     error: void | Object
 };
 
-export default class TextualClassificationInput extends Component<Props, State> {
+export default class TextualClassificationInput extends Component <Props, State> {
     _input: { current: null | React$ElementRef<React$ElementType> };
 
     constructor(props: Props) {
@@ -70,9 +70,13 @@ export default class TextualClassificationInput extends Component<Props, State> 
         }
     }
 
-        handleChange(selected: Array<Object>) {
+    handleChange(selected: Array<Object>) {
+        const toSet = selected.filter(({id}) => {
+            return !isNaN(parseInt(id, 10));
+        });
+
         this.setState({
-            selected: selected
+            selected: toSet
         }, () => {
             this.handleOnChangeToParent();
         });

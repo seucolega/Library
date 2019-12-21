@@ -20,7 +20,7 @@ type State = {
     isLoading?: boolean
 };
 
-export default class PersonItemInput extends Component<Props, State> {
+export default class  PersonItemInput extends Component<Props, State> {
     _person: { current: null | React$ElementRef<React$ElementType> };
     _type: { current: null | React$ElementRef<React$ElementType> };
 
@@ -83,7 +83,6 @@ export default class PersonItemInput extends Component<Props, State> {
             .then(res => res.json())
             .then(result => {
                 if (method === 'POST') {
-                    console.log(result);
                     this.setState({id: result.id})
                 }
             })
@@ -149,7 +148,6 @@ export default class PersonItemInput extends Component<Props, State> {
                                     disabled={this.state.isLoading}>Cancelar</Button>
                         ) : null
                     }
-
                 </div>
             </div>
         )

@@ -1,3 +1,4 @@
+// @flow
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -8,8 +9,28 @@ import {API_URL, FETCH_HEADERS} from "./App";
 import Alert from "react-bootstrap/Alert";
 import PersonInput from "../presentational/PersonInput";
 
-export default class BookItemForm extends Component {
-    constructor(props) {
+type Props = {
+    item: Object
+};
+
+type State = {
+    title: string,
+    original_title: string,
+    publisher: number,
+    age_classification: Array<number>,
+    textual_classification: Array<number>,
+    person: Array<number>,
+    isLoading: boolean,
+    error: void | Object
+};
+
+export default class BookItemForm extends Component<Props, State> {
+    _publisher: { current: null | React$ElementRef<React$ElementType> };
+    _ageClassification: { current: null | React$ElementRef<React$ElementType> };
+    _textualClassification: { current: null | React$ElementRef<React$ElementType> };
+    _person: { current: null | React$ElementRef<React$ElementType> };
+
+    constructor(props: Props) {
         super(props);
         this.state = {
             title: this.props.item.title,
@@ -17,7 +38,9 @@ export default class BookItemForm extends Component {
             publisher: this.props.item.publisher,
             age_classification: this.props.item.age_classification,
             textual_classification: this.props.item.textual_classification,
-            person: this.props.item.person_set,
+            person: this.props.item.person,
+            isLoading: true,
+            error: null
         };
 
         this._publisher = React.createRef();
@@ -26,78 +49,43 @@ export default class BookItemForm extends Component {
         this._person = React.createRef();
     }
 
-    handleTitleChange(event) {
-        this.setState({title: event.target.value});
-    }
-
-    handleOriginalTitleChange(event) {
-        this.setState({original_title: event.target.value});
-    }
-
-    handlePublisherChange() {
-        const selected = this._publisher.current.state.selected;
-
-        const item = typeof selected[0] == 'undefined' ? null : selected[0];
-        if (item) {
-            if (item.customOption) {
-                fetch(`${API_URL}/book/publisher/`, {
-                    method: 'POST',
-                    body: JSON.stringify({name: item.name}),
-                    headers: FETCH_HEADERS
-                })
-                    .then(res => res.json())
-                    .then(result => this.setState({publisher: result.id}))
-            } else {
-                this.setState({publisher: item.id});
-            }
-        }
-    }
-
-    handleAgeClassificationChange(selected) {
+    handleTitleChange(event: SyntheticEvent<HTMLInputElement>) {
         this.setState({
-            age_classification: selected
+            title: event.currentTarget.value
+        }, () => {
+            this.save();
         });
     }
 
-    handleTextualClassificationChange() {
-        const selected = this._textualClassification.current.state.selected;
-
-        const toSet = selected.filter(({id}) => {
-            return !isNaN(id);
-        });
+    handleOriginalTitleChange(event: SyntheticEvent<HTMLInputElement>) {
         this.setState({
-            textual_classification: toSet.map(({id}) => {
-                return id
-            })
+            original_title: event.currentTarget.value
+        }, () => {
+            this.save();
         });
-
-        const toInclude = selected.filter(({customOption, name}) => {
-            return customOption === true && name;
-        });
-
-        for (let item of toInclude) {
-            fetch(`${API_URL}/book/textual_classification/`, {
-                method: 'POST',
-                body: JSON.stringify({name: item.name}),
-                headers: FETCH_HEADERS
-            })
-                .then(res => res.json())
-                .then(result => this.setState({
-                    textual_classification: [...this.state.textual_classification, result.id]
-                }))
-        }
     }
 
-    handlePersonChange() {
-        const selected = this._person.current.state.selected;
-
-        const toSet = selected.filter(({id}) => {
-            return !isNaN(id);
-        });
+    handlePublisherChange(value: number) {
         this.setState({
-            person: toSet.map(({id}) => {
-                return id
-            })
+            publisher: value
+        }, () => {
+            this.save();
+        });
+    }
+
+    handleAgeClassificationChange(value: Array<number>) {
+        this.setState({
+            age_classification: value
+        }, () => {
+            this.save();
+        });
+    }
+
+    handleTextualClassificationChange(value: Array<number>) {
+        this.setState({
+            textual_classification: value
+        }, () => {
+            this.save();
         });
     }
 
@@ -105,9 +93,10 @@ export default class BookItemForm extends Component {
         window.history.back();
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        // this.setState({isLoading: true});
+    save() {
+        this.setState({
+            isLoading: true
+        });
 
         const payload = {
             title: this.state.title,
@@ -117,7 +106,7 @@ export default class BookItemForm extends Component {
             textual_classification: this.state.textual_classification,
             person_set: this.state.person
         };
-        console.log(payload);
+        // console.log(payload);
 
         let url = `${API_URL}/book/book/`;
         const method = this.props.item.id ? 'PUT' : 'POST';
@@ -125,30 +114,35 @@ export default class BookItemForm extends Component {
             url += `${this.props.item.id}/`;
         }
 
-        // fetch(url, {
-        //     method: method,
-        //     body: JSON.stringify(payload),
-        //     headers: FETCH_HEADERS
-        // })
-        //     .then(res => res.json())
-        //     .then(
-        //         (result) => {
-        //             if (result.error) {
-        //                 this.setState({
-        //                     isLoading: false,
-        //                     error: result.error
-        //                 });
-        //             } else {
-        //                 this.goBack();
-        //             }
-        //         },
-        //         (error) => {
-        //             this.setState({
-        //                 isLoading: false,
-        //                 error: error
-        //             });
-        //         }
-        //     );
+        fetch(url, {
+            method: method,
+            body: JSON.stringify(payload),
+            headers: FETCH_HEADERS
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    if (result.error) {
+                        this.setState({
+                            isLoading: false,
+                            error: result.error
+                        });
+                    } else {
+                        // this.goBack();
+                    }
+                },
+                (error) => {
+                    this.setState({
+                        isLoading: false,
+                        error: error
+                    });
+                }
+            );
+    }
+
+    handleSubmit(event: Event) {
+        event.preventDefault();
+        this.save();
     }
 
     render() {
@@ -186,25 +180,30 @@ export default class BookItemForm extends Component {
                                         onChange={this.handleAgeClassificationChange.bind(this)}/>
 
                 <TextualClassificationInput ref={this._textualClassification}
-                                            value={this.state.textual_classification}
+                                            selected={this.state.textual_classification}
                                             onChange={this.handleTextualClassificationChange.bind(this)}/>
 
                 <PersonInput ref={this._person}
                              bookId={this.props.item.id}
-                             value={this.state.person}
-                             onChange={this.handlePersonChange.bind(this)}/>
+                             bookPersonList={this.state.person}/>
 
                 <div className="mt-2">
-                    <Button variant="primary"
-                            type="submit"
-                            disabled={this.state.isLoading}>
-                        Salvar
-                    </Button>
+                    {/*<Button variant="primary"*/}
+                    {/*        type="submit"*/}
+                    {/*        disabled={!this.state.isLoading}>*/}
+                    {/*    Salvar*/}
+                    {/*</Button>*/}
+                    {/*<Button variant="secondary"*/}
+                    {/*        className="ml-2"*/}
+                    {/*        disabled={!this.state.isLoading}*/}
+                    {/*        onClick={this.goBack.bind(this)}>*/}
+                    {/*    Cancelar*/}
+                    {/*</Button>*/}
                     <Button variant="secondary"
                             className="ml-2"
-                            disabled={this.state.isLoading}
+                            disabled={!this.state.isLoading}
                             onClick={this.goBack.bind(this)}>
-                        Cancelar
+                        Voltar
                     </Button>
                 </div>
             </Form>
