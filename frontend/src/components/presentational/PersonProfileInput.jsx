@@ -23,7 +23,7 @@ export default class PersonProfileInput extends Component {
 
     handleChange(selected) {
         const toSet = selected.filter(({id}) => {
-            return !isNaN(id);
+            return !isNaN(parseInt(id, 10));
         });
 
         this.setState({

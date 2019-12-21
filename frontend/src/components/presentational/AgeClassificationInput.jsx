@@ -71,8 +71,12 @@ export default class AgeClassificationInput extends Component<Props, State> {
     }
 
     handleChange(selected: Array<Object>) {
+        const toSet = selected.filter(({id}) => {
+            return !isNaN(parseInt(id, 10));
+        });
+
         this.setState({
-            selected: selected
+            selected: toSet
         }, () => {
             this.handleOnChangeToParent();
         });
