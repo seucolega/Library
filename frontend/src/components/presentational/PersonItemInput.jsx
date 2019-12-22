@@ -89,16 +89,18 @@ export default class PersonItemInput extends Component<Props, State> {
     handleRemove(action: void | string) {
         const id = this.state.id;
 
+        if (!id) {
+            this.setState({id: 0});
+            return;
+        }
+
         if (this.state.confirmToRemove && action === 'remove') {
             fetch(`${API_URL}/book/person/${id}/`, {
                 method: 'DELETE',
                 headers: FETCH_HEADERS
             })
                 .then(() => {
-                    // this.handleRemoveToParent(id);
-                    this.setState({
-                        id: 0
-                    });
+                    this.setState({id: 0});
                 })
         }
 
@@ -113,12 +115,24 @@ export default class PersonItemInput extends Component<Props, State> {
         }
 
         const {bookPerson, personProfileList, personTypeList} = this.props;
+        let buttonRemoveText;
+        let buttonRemoveVariant;
+        if (this.state.confirmToRemove) {
+            buttonRemoveText = 'Confirma exclusão?';
+            buttonRemoveVariant = 'danger';
+        } else if (this.state.id) {
+            buttonRemoveText = 'Excluir';
+            buttonRemoveVariant = 'outline-danger';
+        } else {
+            buttonRemoveText = 'Cancelar';
+            buttonRemoveVariant = 'outline-secondary';
+        }
 
         return (
             <div className="pt-3 pb-4 px-3 border-top">
                 <div>
                     <PersonProfileInput ref={this._person}
-                                        id={bookPerson.id}
+                                        id={bookPerson.id | 0}
                                         personTypeList={personProfileList}
                                         selected={personProfileList.filter(({id}) => {
                                             return id === bookPerson.person
@@ -132,9 +146,9 @@ export default class PersonItemInput extends Component<Props, State> {
                                      onChange={this.handleTypeChange.bind(this)}/>
                 </div>
                 <div className="d-flex justify-content-end mt-3">
-                    <Button variant={this.state.confirmToRemove ? 'danger' : 'outline-danger'}
+                    <Button variant={buttonRemoveVariant}
                             onClick={this.handleRemove.bind(this, 'remove')}>
-                        {this.state.confirmToRemove ? 'Confirma exclusão?' : 'Excluir'}
+                        {buttonRemoveText}
                     </Button>
                     {
                         this.state.confirmToRemove ? (

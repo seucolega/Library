@@ -187,7 +187,7 @@ export default class BookItemForm extends Component<Props, State> {
                              bookId={this.props.item.id}
                              bookPersonList={this.state.person}/>
 
-                <div className="mt-2">
+                <div className="mt-2 d-flex justify-content-end">
                     {/*<Button variant="primary"*/}
                     {/*        type="submit"*/}
                     {/*        disabled={!this.state.isLoading}>*/}
