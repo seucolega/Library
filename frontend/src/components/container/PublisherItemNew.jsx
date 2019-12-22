@@ -1,14 +1,19 @@
+// @flow
 import React, {Component} from "react";
 import PublisherItemForm from "./PublisherItemForm";
 import PageHeader from "../presentational/PageHeader";
 
-export default class PublisherItemNew extends Component {
-    constructor(props) {
+type Props = {}
+
+type State = {
+    item: Object
+}
+
+export default class PublisherItemNew extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            error: null,
-            isLoaded: false,
             item: {
                 name: '',
             }

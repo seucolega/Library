@@ -1,22 +1,17 @@
+// @flow
 import React, {Component} from "react";
 import BookList from "./BookList";
 import BookItem from "./BookItem";
 import BookItemNew from "./BookItemNew";
 
-export const verboseName = 'Book';
-export const verboseNamePlural = 'Books';
+// export const verboseName = 'Book';
+// export const verboseNamePlural = 'Books';
 
-export default class Book extends Component {
-    constructor(props) {
-        super(props);
+type Props = {
+    match: Object
+}
 
-        this.state = {
-            error: null,
-            isLoaded: false,
-            list: []
-        };
-    }
-
+export default class Book extends Component<Props> {
     render() {
         const id = this.props.match.params.id;
         if (id === 'new') {

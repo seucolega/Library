@@ -1,16 +1,27 @@
+// @flow
 import React, {Component} from "react";
 import PageHeader from "../presentational/PageHeader";
 import PublisherItemForm from "./PublisherItemForm";
 import {API_URL} from "./App";
 
-export default class PublisherItem extends Component {
-    constructor(props) {
+type Props = {
+    id: number
+}
+
+type State = {
+    item: Object,
+    isLoading: boolean,
+    error: void | Object
+}
+
+export default class PublisherItem extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            error: null,
-            isLoaded: false,
-            item: null
+            item: null,
+            isLoading: true,
+            error: null
         };
     }
 
@@ -20,24 +31,25 @@ export default class PublisherItem extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        isLoaded: true,
-                        item: result
+                        item: result,
+                        isLoading: false,
+                        error: result.error
                     });
                 },
                 (error) => {
                     this.setState({
-                        isLoaded: true,
-                        error
+                        isLoading: false,
+                        error: error
                     });
                 }
             )
     }
 
     render() {
-        const {error, isLoaded, item} = this.state;
+        const {error, isLoading, item} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
+        } else if (isLoading) {
             return <div>Loading...</div>;
         } else {
             return (

@@ -2,13 +2,17 @@ import React, {Component} from "react";
 import TextualClassificationItemForm from "./TextualClassificationItemForm";
 import PageHeader from "../presentational/PageHeader";
 
-export default class TextualClassificationItemNew extends Component {
-    constructor(props) {
+type Props = {}
+
+type State = {
+    item: Object
+}
+
+export default class TextualClassificationItemNew extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            error: null,
-            isLoaded: false,
             item: {
                 name: '',
             }
