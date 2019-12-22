@@ -45,7 +45,7 @@ export default class BookList extends Component<Props, State> {
     }
 
     render() {
-        const {error, isLoading, list} = this.state;
+        const {list, isLoading, error} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (isLoading) {
