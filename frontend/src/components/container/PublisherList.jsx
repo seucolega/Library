@@ -8,6 +8,7 @@ import {API_URL} from "./App";
 export default class PublisherList extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             error: null,
             isLoaded: false,

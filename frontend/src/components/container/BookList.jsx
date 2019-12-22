@@ -1,3 +1,4 @@
+// @flow
 import React, {Component} from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import BookListItem from "./BookListItem";
@@ -5,13 +6,21 @@ import PageHeader from "../presentational/PageHeader";
 import {Link} from "react-router-dom";
 import {API_URL} from "./App";
 
-export default class BookList extends Component {
-    constructor(props) {
+type Props = {}
+
+type State = {
+    list: Array<Object>,
+    isLoading: boolean,
+    error: void | Object
+}
+
+export default class BookList extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
-            error: null,
-            isLoaded: false,
-            list: []
+            list: [],
+            isLoading: true,
+            error: null
         };
     }
 
@@ -21,24 +30,25 @@ export default class BookList extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        isLoaded: true,
-                        list: result.results
+                        list: result.results,
+                        isLoading: false,
+                        error: result.error
                     });
                 },
                 (error) => {
                     this.setState({
-                        isLoaded: true,
-                        error
+                        isLoading: false,
+                        error: error
                     });
                 }
             )
     }
 
     render() {
-        const {error, isLoaded, list} = this.state;
+        const {error, isLoading, list} = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
+        } else if (isLoading) {
             return <div>Loading...</div>;
         } else {
             return (

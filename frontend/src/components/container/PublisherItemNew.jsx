@@ -5,6 +5,7 @@ import PageHeader from "../presentational/PageHeader";
 export default class PublisherItemNew extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             error: null,
             isLoaded: false,

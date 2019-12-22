@@ -1,31 +1,40 @@
+// @flow
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import {API_URL, FETCH_HEADERS} from "./App";
 
-export default class TextualClassificationItemForm extends Component {
-    constructor(props) {
+type Props = {
+    item: Object
+}
+
+type State = {
+    name: string,
+    isLoading: boolean,
+    error: void | Object
+}
+
+export default class TextualClassificationItemForm extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
+
         this.state = {
             name: this.props.item.name,
-            error: null,
-            isLoading: false
+            isLoading: false,
+            error: null
         };
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.goBack = this.goBack.bind(this);
     }
 
     goBack() {
         window.history.back();
     }
 
-    handleNameChange(event) {
+    handleNameChange(event: SyntheticInputEvent<HTMLInputElement>) {
         this.setState({name: event.target.value});
     }
 
-    handleSubmit(event) {
+    handleSubmit(event: Event) {
         event.preventDefault();
         this.setState({isLoading: true});
 
@@ -73,14 +82,14 @@ export default class TextualClassificationItemForm extends Component {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form onSubmit={this.handleSubmit.bind(this)}>
                 {alert}
 
                 <Form.Group controlId="form_name">
                     <Form.Label column="">Nome</Form.Label>
                     <Form.Control name="name"
                                   value={this.state.name}
-                                  onChange={this.handleNameChange}
+                                  onChange={this.handleNameChange.bind(this)}
                                   placeholder="Classificação"/>
                 </Form.Group>
 
@@ -88,7 +97,7 @@ export default class TextualClassificationItemForm extends Component {
                     <Button variant="primary" type="submit" disabled={this.state.isLoading}>
                         Salvar
                     </Button>
-                    <Button variant="secondary" className="ml-2" disabled={this.state.isLoading} onClick={this.goBack}>
+                    <Button variant="secondary" className="ml-2" disabled={this.state.isLoading} onClick={this.goBack.bind(this)}>
                         Cancelar
                     </Button>
                 </div>

@@ -49,17 +49,17 @@ export default class BookItemForm extends Component<Props, State> {
         this._person = React.createRef();
     }
 
-    handleTitleChange(event: SyntheticEvent<HTMLInputElement>) {
+    handleTitleChange(event: SyntheticInputEvent<HTMLInputElement>) {
         this.setState({
-            title: event.currentTarget.value
+            title: event.target.value
         }, () => {
             this.save();
         });
     }
 
-    handleOriginalTitleChange(event: SyntheticEvent<HTMLInputElement>) {
+    handleOriginalTitleChange(event: SyntheticInputEvent<HTMLInputElement>) {
         this.setState({
-            original_title: event.currentTarget.value
+            original_title: event.target.value
         }, () => {
             this.save();
         });
