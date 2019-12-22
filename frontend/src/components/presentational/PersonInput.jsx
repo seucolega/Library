@@ -98,14 +98,6 @@ export default class PersonInput extends Component<Props, State> {
         }
     }
 
-    handleRemove(idToRemove: number) {
-        this.setState({
-            bookPersonList: this.state.bookPersonList.filter(({id}) => {
-                return id !== idToRemove
-            })
-        });
-    }
-
     handleAdd() {
         this.setState({
             bookPersonList: [...this.state.bookPersonList, {
@@ -136,12 +128,10 @@ export default class PersonInput extends Component<Props, State> {
                     </div>
                     <div className="border rounded my-3">
                         {bookPersonList.map((bookPerson, index) => (
-                            <div key={index} className={`pt-3 pb-4 px-3 ${index > 0 ? 'border-top' : ''}`}>
-                                <PersonItemInput bookPerson={bookPerson}
-                                                 personProfileList={personProfileList}
-                                                 personTypeList={personTypeList}
-                                                 onRemove={this.handleRemove.bind(this)}/>
-                            </div>
+                            <PersonItemInput key={index}
+                                             bookPerson={bookPerson}
+                                             personProfileList={personProfileList}
+                                             personTypeList={personTypeList}/>
                         ))}
                     </div>
                 </fieldset>

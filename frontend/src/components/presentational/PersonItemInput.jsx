@@ -8,23 +8,21 @@ import Button from "react-bootstrap/Button";
 type Props = {
     personProfileList: Array<Object>,
     personTypeList: Array<Object>,
-    bookPerson: Object,
-    onRemove: Function
+    bookPerson: Object
 };
 
 type State = {
     id: number,
     person: null | number,
     type: Array<number>,
-    confirmToRemove?: boolean,
-    isLoading?: boolean
+    confirmToRemove?: boolean
 };
 
-export default class  PersonItemInput extends Component<Props, State> {
+export default class PersonItemInput extends Component<Props, State> {
     _person: { current: null | React$ElementRef<React$ElementType> };
     _type: { current: null | React$ElementRef<React$ElementType> };
 
-    constructor(props: Props) { 
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -91,34 +89,33 @@ export default class  PersonItemInput extends Component<Props, State> {
     handleRemove(action: void | string) {
         const id = this.state.id;
 
-        this.setState({
-            isLoading: true
-        });
-
         if (this.state.confirmToRemove && action === 'remove') {
             fetch(`${API_URL}/book/person/${id}/`, {
                 method: 'DELETE',
                 headers: FETCH_HEADERS
             })
                 .then(() => {
-                    this.handleRemoveToParent(id);
+                    // this.handleRemoveToParent(id);
+                    this.setState({
+                        id: 0
+                    });
                 })
         }
 
-        this.setState({confirmToRemove: !this.state.confirmToRemove});
-    }
-
-    handleRemoveToParent(id: number) {
-        if (typeof this.props.onRemove === "function") {
-            this.props.onRemove(id);
-        }
+        this.setState({
+            confirmToRemove: !this.state.confirmToRemove
+        });
     }
 
     render() {
+        if (this.state.id < 1) {
+            return <></>;
+        }
+
         const {bookPerson, personProfileList, personTypeList} = this.props;
 
         return (
-            <div>
+            <div className="pt-3 pb-4 px-3 border-top">
                 <div>
                     <PersonProfileInput ref={this._person}
                                         id={bookPerson.id}
@@ -136,16 +133,16 @@ export default class  PersonItemInput extends Component<Props, State> {
                 </div>
                 <div className="d-flex justify-content-end mt-3">
                     <Button variant={this.state.confirmToRemove ? 'danger' : 'outline-danger'}
-                            onClick={this.handleRemove.bind(this, 'remove')}
-                            disabled={this.state.isLoading}>
+                            onClick={this.handleRemove.bind(this, 'remove')}>
                         {this.state.confirmToRemove ? 'Confirma exclusão?' : 'Excluir'}
                     </Button>
                     {
                         this.state.confirmToRemove ? (
                             <Button variant="secondary"
                                     className="ml-2"
-                                    onClick={this.handleRemove.bind(this)}
-                                    disabled={this.state.isLoading}>Cancelar</Button>
+                                    onClick={this.handleRemove.bind(this)}>
+                                Cancelar
+                            </Button>
                         ) : null
                     }
                 </div>
