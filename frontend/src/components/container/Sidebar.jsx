@@ -1,8 +1,11 @@
+// @flow
 import React, {Component} from "react";
 import ListGroup from "react-bootstrap/ListGroup"
 import {LinkContainer} from 'react-router-bootstrap'
 
-export default class Sidebar extends Component {
+type Props = {}
+
+export default class Sidebar extends Component<Props> {
     render() {
         return (
             <div className="bg-light border-right" id="sidebar-wrapper">

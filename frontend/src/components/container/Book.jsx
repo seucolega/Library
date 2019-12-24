@@ -14,6 +14,7 @@ type Props = {
 export default class Book extends Component<Props> {
     render() {
         const id = this.props.match.params.id;
+        
         if (id === 'new') {
             return <BookItemNew/>
         } else if (id > 0) {

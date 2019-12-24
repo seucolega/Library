@@ -1,15 +1,28 @@
+// @flow
 import React, {Component} from "react";
 import BookItemForm from "./BookItemForm";
 import PageHeader from "../presentational/PageHeader";
 import {API_URL} from "./App";
 
-export default class BookItem extends Component {
-    constructor(props) {
+type Props = {
+    id: number
+}
+
+type State = {
+    item: Object,
+    isLoading: boolean,
+    error: void | Object
+}
+
+
+export default class BookItem extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
+
         this.state = {
-            error: null,
-            isLoaded: false,
-            item: null
+            item: null,
+            isLoading: true,
+            error: null
         };
     }
 
@@ -18,28 +31,27 @@ export default class BookItem extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    result.person = result.person_set;
-                    delete result.person_set;
-
                     this.setState({
-                        isLoaded: true,
-                        item: result
+                        item: result,
+                        isLoading: false,
+                        error: result.error
                     });
                 },
                 (error) => {
                     this.setState({
-                        isLoaded: true,
-                        error
+                        isLoading: false,
+                        error: error
                     });
                 }
             )
     }
 
     render() {
-        const {error, isLoaded, item} = this.state;
+        const {item, isLoading, error} = this.state;
+
         if (error) {
             return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
+        } else if (isLoading) {
             return <div>Loading...</div>;
         } else {
             return (
