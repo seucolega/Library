@@ -6,4 +6,4 @@ install:
   - pipenv install --dev
 script:
   - pytest
-  - flake8
+  - flake8 backend
