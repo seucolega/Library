@@ -9,6 +9,7 @@ flake8-bugbear = "*"
 pre-commit = "*"
 black = "*"
 isort = "*"
+pytest-cov = "*"
 
 [packages]
 django = "*"
@@ -19,3 +20,6 @@ psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
