@@ -9,6 +9,7 @@ flake8-bugbear = "*"
 pre-commit = "*"
 black = "*"
 isort = "*"
+codecov = "*"
 pytest-cov = "*"
 
 [packages]

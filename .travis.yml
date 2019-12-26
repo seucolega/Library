@@ -6,3 +6,6 @@ install:
   - pipenv install --dev
 script:
   - flake8 backend
+  - pytest backend --cov=codecov
+after_success:
+  - codecov
