@@ -5,9 +5,10 @@ env:
   global:
     - PIPENV_IGNORE_VIRTUALENVS=1
 install:
-  - pip install -q pipenv
+  - pip install -q pipenv pytest codecov
   - pipenv install --dev
 script:
   - flake8 backend
+  - pytest backend --cov-config=.coveragerc
 after_success:
   - codecov
