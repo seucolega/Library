@@ -10,13 +10,13 @@ pre-commit = "*"
 black = "*"
 isort = "*"
 codecov = "*"
+pytest = "*"
+pytest-django = "*"
 pytest-cov = "*"
 
 [packages]
 django = "*"
 djangorestframework = "*"
-pytest = "*"
-pytest-django = "*"
 psycopg2 = "*"
 
 [requires]
