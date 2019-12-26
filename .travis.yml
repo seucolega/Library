@@ -6,7 +6,7 @@ env:
     - PIPENV_IGNORE_VIRTUALENVS=1
 install:
   - pip install -q pipenv
-  - pipenv sync --dev
+  - pipenv install --dev
 script:
   - flake8 backend
 after_success:
