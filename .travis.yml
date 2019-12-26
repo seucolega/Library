@@ -5,7 +5,7 @@ env:
   global:
     - PIPENV_IGNORE_VIRTUALENVS=1
 install:
-  - pip install -q pipenv pytest codecov
+  - pip install -q pipenv
   - pipenv install --dev
 script:
   - flake8 backend
