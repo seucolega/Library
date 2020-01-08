@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import PageHeader from "../presentational/PageHeader";
 import AgeClassificationItemForm from "./AgeClassificationItemForm";
-import {API_URL} from "./App";
+import {API_URL, FETCH_HEADERS} from "./App";
 
 type Props = {
     id: number
@@ -25,7 +25,9 @@ export default class AgeClassificationItem extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/age_classification/${this.props.id}/`)
+        fetch(`${API_URL}/book/age_classification/${this.props.id}/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {

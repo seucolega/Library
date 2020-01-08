@@ -33,7 +33,9 @@ export default class AgeClassificationInput extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/age_classification/`)
+        fetch(`${API_URL}/book/age_classification/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {
