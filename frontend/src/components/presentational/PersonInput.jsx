@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from "react";
-import {API_URL} from "../container/App";
+import {API_URL, FETCH_HEADERS} from "../container/App";
 import PersonItemInput from "./PersonItemInput";
 import Button from "react-bootstrap/Button";
 
@@ -41,7 +41,9 @@ export default class PersonInput extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/person_type/`)
+        fetch(`${API_URL}/book/person_type/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -60,7 +62,9 @@ export default class PersonInput extends Component<Props, State> {
                 }
             );
 
-        fetch(`${API_URL}/book/person_profile/`)
+        fetch(`${API_URL}/book/person_profile/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -78,7 +82,9 @@ export default class PersonInput extends Component<Props, State> {
             );
 
         for (let id of this.props.bookPersonList) {
-            fetch(`${API_URL}/book/person/${id}/`)
+            fetch(`${API_URL}/book/person/${id}/`, {
+            headers: FETCH_HEADERS
+        })
                 .then(res => res.json())
                 .then(
                     (result) => {

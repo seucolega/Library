@@ -29,7 +29,9 @@ export default class PublisherInput extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/publisher/`)
+        fetch(`${API_URL}/book/publisher/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {

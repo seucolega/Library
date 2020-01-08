@@ -33,7 +33,9 @@ export default class TextualClassificationInput extends Component <Props, State>
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/textual_classification/`)
+        fetch(`${API_URL}/book/textual_classification/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {

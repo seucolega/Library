@@ -4,7 +4,7 @@ import PageHeader from "../presentational/PageHeader";
 import ListGroup from "react-bootstrap/ListGroup";
 import PublisherListItem from "./PublisherListItem";
 import {Link} from "react-router-dom";
-import {API_URL} from "./App";
+import {API_URL, FETCH_HEADERS} from "./App";
 
 type Props = {}
 
@@ -26,7 +26,9 @@ export default class PublisherList extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/publisher/`)
+        fetch(`${API_URL}/book/publisher/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {

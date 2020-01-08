@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import BookListItem from "./BookListItem";
 import PageHeader from "../presentational/PageHeader";
 import {Link} from "react-router-dom";
-import {API_URL} from "./App";
+import {API_URL, FETCH_HEADERS} from "./App";
 
 type Props = {}
 
@@ -26,7 +26,9 @@ export default class BookList extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/book/`)
+        fetch(`${API_URL}/book/book/`, {
+            headers: FETCH_HEADERS
+        })
             .then(res => res.json())
             .then(
                 (result) => {
