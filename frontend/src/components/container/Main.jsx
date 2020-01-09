@@ -3,7 +3,6 @@ import React, {Component} from "react";
 import {Route, Switch} from "react-router-dom";
 import Home from "./Home";
 import Book from "./Book";
-// import Person from "./Person";
 import Publisher from "./Publisher";
 import AgeClassification from "./AgeClassification";
 import TextualClassification from "./TextualClassification";
@@ -13,6 +12,7 @@ import Login from "./Login";
 import Logout from "./Logout";
 
 type Props = {
+    isLoggedIn: boolean,
     onLogin: Function,
     onLogout: Function
 }
@@ -22,16 +22,19 @@ export default class Main extends Component<Props> {
         return (
             <div id="main">
                 <Nav className="main-heading border-bottom justify-content-end">
-                    <Nav.Item>
-                        <LinkContainer exact to="/login">
-                            <Nav.Link>Entrar</Nav.Link>
-                        </LinkContainer>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <LinkContainer exact to="/logout">
-                            <Nav.Link>Sair</Nav.Link>
-                        </LinkContainer>
-                    </Nav.Item>
+                    {this.props.isLoggedIn ? (
+                        <Nav.Item>
+                            <LinkContainer exact to="/logout">
+                                <Nav.Link>Sair</Nav.Link>
+                            </LinkContainer>
+                        </Nav.Item>
+                    ) : (
+                        <Nav.Item>
+                            <LinkContainer exact to="/login">
+                                <Nav.Link>Entrar</Nav.Link>
+                            </LinkContainer>
+                        </Nav.Item>
+                    )}
                 </Nav>
 
                 <div className="container-fluid p-4 pb-5">
