@@ -9,11 +9,11 @@ import Sidebar from "./components/container/Sidebar.jsx";
 import Main from "./components/container/Main.jsx";
 import cookie from "react-cookies";
 
-// export const API_URL = '/api';
+export const API_URL = '/api';
 
 const csrfToken = cookie.load('csrftoken');
 
-export function fetchHeaders() {
+export function fetchHeaders(): Object {
     return {
         'Content-Type': 'application/json',
         'X-CSRFToken': csrfToken,
@@ -50,7 +50,8 @@ export default class App extends Component<Props, State> {
                 <div className="App">
                     <div className="d-flex" id="wrapper">
                         <Sidebar isLoggedIn={isLoggedIn}/>
-                        <Main onLogin={this.handleLogin.bind(this)}
+                        <Main isLoggedIn={isLoggedIn}
+                              onLogin={this.handleLogin.bind(this)}
                               onLogout={this.handleLogout.bind(this)}/>
                     </div>
                 </div>
