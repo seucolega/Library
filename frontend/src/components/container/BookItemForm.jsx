@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import PublisherInput from "../presentational/PublisherInput";
 import AgeClassificationInput from "../presentational/AgeClassificationInput";
 import TextualClassificationInput from "../presentational/TextualClassificationInput";
-import {API_URL, FETCH_HEADERS} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 import Alert from "react-bootstrap/Alert";
 import PersonInput from "../presentational/PersonInput";
 
@@ -117,7 +117,7 @@ export default class BookItemForm extends Component<Props, State> {
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: FETCH_HEADERS
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(

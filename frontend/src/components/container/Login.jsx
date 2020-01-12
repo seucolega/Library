@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from "react";
-import {API_URL, FETCH_HEADERS} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 import Home from "./Home";
 
 type Props = {
@@ -18,7 +18,7 @@ export default class Login extends Component<Props> {
         };
 
         fetch(`${API_URL}/rest-auth/login/`, {
-            headers: FETCH_HEADERS,
+            headers: fetchHeaders(),
             method: 'POST',
             body: JSON.stringify(payload)
         })

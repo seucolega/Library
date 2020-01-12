@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from "react";
-import {API_URL, FETCH_HEADERS} from "../container/App";
+import {API_URL, fetchHeaders} from "../../App";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
 
@@ -57,7 +57,7 @@ export default class PersonProfileInput extends Component<Props, State> {
             fetch(`${API_URL}/book/person_profile/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: FETCH_HEADERS
+                headers: fetchHeaders()
             })
                 .then(res => res.json())
                 .then(result => this.setState({

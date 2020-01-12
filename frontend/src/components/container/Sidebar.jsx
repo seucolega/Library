@@ -16,8 +16,7 @@ export default class Sidebar extends Component<Props> {
                     <LinkContainer exact to="/">
                         <ListGroup.Item action>Início</ListGroup.Item>
                     </LinkContainer>
-                    {this.props.isLoggedIn &&
-                    <>
+                    {this.props.isLoggedIn && <>
                         <LinkContainer to="/book">
                             <ListGroup.Item action>Livros</ListGroup.Item>
                         </LinkContainer>
