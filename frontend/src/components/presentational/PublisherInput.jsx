@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import {Typeahead} from "react-bootstrap-typeahead";
-import {API_URL, FETCH_HEADERS} from "../container/App";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {
     value: number,
@@ -30,7 +30,7 @@ export default class PublisherInput extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/publisher/`, {
-            headers: FETCH_HEADERS
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(
@@ -85,7 +85,7 @@ export default class PublisherInput extends Component<Props, State> {
             fetch(`${API_URL}/book/publisher/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: FETCH_HEADERS
+                headers: fetchHeaders()
             })
                 .then(res => res.json())
                 .then(result => this.setState({
