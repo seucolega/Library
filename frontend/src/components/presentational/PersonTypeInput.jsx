@@ -62,7 +62,7 @@ export default class PersonTypeInput extends Component<Props, State> {
             fetch(`${API_URL}/book/person_type/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: fetchHeaders()
+                headers: fetchHeaders
             })
                 .then(res => res.json())
                 .then(result => this.setState({

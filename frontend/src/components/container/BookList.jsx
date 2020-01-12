@@ -27,7 +27,7 @@ export default class BookList extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/book/`, {
-            headers: fetchHeaders()
+            headers: fetchHeaders
         })
             .then(res => res.json())
             .then(

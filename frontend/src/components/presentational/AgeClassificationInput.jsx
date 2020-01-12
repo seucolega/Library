@@ -34,7 +34,7 @@ export default class AgeClassificationInput extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/age_classification/`, {
-            headers: fetchHeaders()
+            headers: fetchHeaders
         })
             .then(res => res.json())
             .then(
@@ -91,7 +91,7 @@ export default class AgeClassificationInput extends Component<Props, State> {
             fetch(`${API_URL}/book/age_classification/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: fetchHeaders()
+                headers: fetchHeaders
             })
                 .then(res => res.json())
                 .then(result => this.setState({

@@ -76,7 +76,7 @@ export default class PersonItemInput extends Component<Props, State> {
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: fetchHeaders()
+            headers: fetchHeaders
         })
             .then(res => res.json())
             .then(result => {
@@ -97,7 +97,7 @@ export default class PersonItemInput extends Component<Props, State> {
         if (this.state.confirmToRemove && action === 'remove') {
             fetch(`${API_URL}/book/person/${id}/`, {
                 method: 'DELETE',
-                headers: fetchHeaders()
+                headers: fetchHeaders
             })
                 .then(() => {
                     this.setState({id: 0});

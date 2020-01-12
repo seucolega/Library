@@ -30,7 +30,7 @@ export default class PublisherInput extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/publisher/`, {
-            headers: fetchHeaders()
+            headers: fetchHeaders
         })
             .then(res => res.json())
             .then(
@@ -85,7 +85,7 @@ export default class PublisherInput extends Component<Props, State> {
             fetch(`${API_URL}/book/publisher/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: fetchHeaders()
+                headers: fetchHeaders
             })
                 .then(res => res.json())
                 .then(result => this.setState({

@@ -57,7 +57,7 @@ export default class PersonProfileInput extends Component<Props, State> {
             fetch(`${API_URL}/book/person_profile/`, {
                 method: 'POST',
                 body: JSON.stringify({name: item.name}),
-                headers: fetchHeaders()
+                headers: fetchHeaders
             })
                 .then(res => res.json())
                 .then(result => this.setState({
