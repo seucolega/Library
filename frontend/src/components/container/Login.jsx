@@ -18,7 +18,7 @@ export default class Login extends Component<Props> {
         };
 
         fetch(`${API_URL}/rest-auth/login/`, {
-            headers: fetchHeaders(),
+            headers: fetchHeaders,
             method: 'POST',
             body: JSON.stringify(payload)
         })
@@ -28,18 +28,6 @@ export default class Login extends Component<Props> {
                     if (typeof this.props.onLogin === "function") {
                         this.props.onLogin(result.key);
                     }
-
-                    // this.setState({
-                    //     item: result,
-                    //     isLoading: false,
-                    //     error: result.error
-                    // });
-                },
-                (error) => {
-                    // this.setState({
-                    //     isLoading: false,
-                    //     error: error
-                    // });
                 }
             )
     }

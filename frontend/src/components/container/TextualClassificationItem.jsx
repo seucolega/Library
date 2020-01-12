@@ -27,7 +27,7 @@ export default class TextualClassificationItem extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/textual_classification/${this.props.id}/`, {
-            headers: fetchHeaders()
+            headers: fetchHeaders
         })
             .then(res => res.json())
             .then(

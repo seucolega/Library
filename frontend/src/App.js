@@ -13,19 +13,25 @@ export const API_URL = '/api';
 
 const csrfToken = cookie.load('csrftoken');
 
-export function fetchHeaders(): Object {
-    return {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        'Authorization': this.state ? `Token ${this.state.token}` : null
-    }
-}
+// export function fetchHeaders: Object {
+//     return {
+//         'Content-Type': 'application/json',
+//         'X-CSRFToken': csrfToken,
+//         'Authorization': this.state ? `Token ${this.state.token}` : null
+//     }
+// }
+
+export let fetchHeaders = {
+    'Content-Type': 'application/json',
+    'X-CSRFToken': csrfToken,
+    'Authorization': ''
+};
 
 type Props = {}
 
 type State = {
     isLoggedIn: boolean,
-    token: null | string
+    token: string
 }
 
 export default class App extends Component<Props, State> {
@@ -33,6 +39,8 @@ export default class App extends Component<Props, State> {
         this.setState({
             isLoggedIn: Boolean(key),
             token: key
+        }, () => {
+            fetchHeaders.Authorization = this.state ? `Token ${this.state.token}` : '';
         });
     }
 
