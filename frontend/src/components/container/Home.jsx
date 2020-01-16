@@ -1,6 +1,6 @@
 // @flow
 import React, {Component} from "react";
-import Page from "./Page.jsx";
+import Page from "./Page";
 
 type Props = {
     match?: Object

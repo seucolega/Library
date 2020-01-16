@@ -26,7 +26,7 @@ export default class AgeClassificationItem extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/age_classification/${this.props.id}/`, {
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(
