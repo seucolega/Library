@@ -42,7 +42,7 @@ export default class PersonInput extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/person_type/`, {
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(
@@ -63,7 +63,7 @@ export default class PersonInput extends Component<Props, State> {
             );
 
         fetch(`${API_URL}/book/person_profile/`, {
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(
@@ -83,7 +83,7 @@ export default class PersonInput extends Component<Props, State> {
 
         for (let id of this.props.bookPersonList) {
             fetch(`${API_URL}/book/person/${id}/`, {
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
                 .then(res => res.json())
                 .then(

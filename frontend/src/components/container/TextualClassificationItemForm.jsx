@@ -52,7 +52,7 @@ export default class TextualClassificationItemForm extends Component<Props, Stat
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(

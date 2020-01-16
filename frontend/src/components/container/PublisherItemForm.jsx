@@ -51,7 +51,7 @@ export default class PublisherItemForm extends Component<Props, State> {
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(

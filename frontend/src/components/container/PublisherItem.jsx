@@ -27,7 +27,7 @@ export default class PublisherItem extends Component<Props, State> {
 
     componentDidMount() {
         fetch(`${API_URL}/book/publisher/${this.props.id}/`, {
-            headers: fetchHeaders
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(
