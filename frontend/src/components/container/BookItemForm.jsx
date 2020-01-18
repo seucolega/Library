@@ -106,7 +106,6 @@ export default class BookItemForm extends Component<Props, State> {
             textual_classification: this.state.textual_classification,
             person_set: this.state.person
         };
-        // console.log(payload);
 
         let url = `${API_URL}/book/book/`;
         const method = this.props.item.id ? 'PUT' : 'POST';
