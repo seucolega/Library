@@ -4,11 +4,14 @@ import ListGroup from "react-bootstrap/ListGroup"
 import {LinkContainer} from 'react-router-bootstrap'
 
 type Props = {
-    isLoggedIn: boolean
+    // isLoggedIn: boolean
 }
 
 export default class Sidebar extends Component<Props> {
     render() {
+        // const isLoggedIn = this.props.isLoggedIn;
+        const isLoggedIn = true;
+
         return (
             <div className="bg-light border-right" id="sidebar-wrapper">
                 <div className="sidebar-heading border-bottom">Start Bootstrap</div>
@@ -16,7 +19,7 @@ export default class Sidebar extends Component<Props> {
                     <LinkContainer exact to="/">
                         <ListGroup.Item action>Início</ListGroup.Item>
                     </LinkContainer>
-                    {this.props.isLoggedIn && <>
+                    {isLoggedIn && <>
                         <LinkContainer to="/book">
                             <ListGroup.Item action>Livros</ListGroup.Item>
                         </LinkContainer>

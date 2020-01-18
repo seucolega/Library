@@ -4,6 +4,7 @@ import {API_URL, fetchHeaders} from "../../App";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import styles from './LoginForm.css';
 
 type Props = {
     onLogin: Function
@@ -31,8 +32,6 @@ export default class LoginForm extends Component<Props, State> {
 
     handleSubmit(event: Event) {
         event.preventDefault();
-
-        // console.log(fetchHeaders);
 
         const payload = {
             username: this.state.username,
@@ -92,7 +91,8 @@ export default class LoginForm extends Component<Props, State> {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Form onSubmit={this.handleSubmit.bind(this)}
+                  className={`${styles.loginForm} loginForm`}>
                 {alert}
 
                 <Form.Group controlId="username">
@@ -114,10 +114,12 @@ export default class LoginForm extends Component<Props, State> {
                                   required/>
                 </Form.Group>
 
-                <Button variant="primary"
-                        type="submit">
-                    Salvar
-                </Button>
+                <div className="mt-2 d-flex justify-content-end">
+                    <Button variant="primary"
+                            type="submit">
+                        Salvar
+                    </Button>
+                </div>
             </Form>
         );
     }

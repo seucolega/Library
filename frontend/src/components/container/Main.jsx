@@ -8,8 +8,8 @@ import AgeClassification from "./AgeClassification";
 import TextualClassification from "./TextualClassification";
 import {PrivateRoute} from "../../App";
 import TopNav from "../presentational/TopNav";
-import PageHeader from "../presentational/PageHeader";
-import LoginForm from "../presentational/LoginForm";
+// import PageHeader from "../presentational/PageHeader";
+import LoginPage from "./LoginPage";
 
 type Props = {
     isLoggedIn: boolean,
@@ -23,8 +23,12 @@ export default class Main extends Component<Props> {
 
         return (
             <div id="main">
-                <TopNav isLoggedIn={isLoggedIn}
-                        onLogout={this.props.onLogout}/>
+                {isLoggedIn ?
+                    <TopNav isLoggedIn={isLoggedIn}
+                            onLogout={this.props.onLogout}/>
+                    :
+                    <></>
+                }
 
                 <div className="container-fluid p-4 pb-5">
                     <Switch>
@@ -32,10 +36,7 @@ export default class Main extends Component<Props> {
                             {isLoggedIn ?
                                 <Redirect to={{pathname: '/'}}/>
                                 :
-                                <div>
-                                    <PageHeader title="Login"/>
-                                    <LoginForm onLogin={this.props.onLogin}/>
-                                </div>
+                                <LoginPage onLogin={this.props.onLogin}/>
                             }
                         </Route>
                         <PrivateRoute isLoggedIn={isLoggedIn}

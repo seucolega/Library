@@ -68,7 +68,11 @@ class App extends Component<Props, State> {
         return (
             <div className="App">
                 <div className="d-flex" id="wrapper">
-                    <Sidebar isLoggedIn={isLoggedIn}/>
+                    {isLoggedIn ?
+                        <Sidebar isLoggedIn={true}/>
+                        :
+                        <></>
+                    }
 
                     <Main isLoggedIn={isLoggedIn}
                           onLogin={this.handleLogin.bind(this)}
