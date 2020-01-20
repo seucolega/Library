@@ -4,7 +4,7 @@ import PageHeader from "../presentational/PageHeader";
 import ListGroup from "react-bootstrap/ListGroup";
 import AgeClassificationListItem from "./AgeClassificationListItem";
 import {Link} from "react-router-dom";
-import {API_URL} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {}
 
@@ -26,7 +26,9 @@ export default class AgeClassificationList extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/age_classification/`)
+        fetch(`${API_URL}/book/age_classification/`, {
+            headers: fetchHeaders()
+        })
             .then(res => res.json())
             .then(
                 (result) => {

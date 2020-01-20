@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import BookItemForm from "./BookItemForm";
 import PageHeader from "../presentational/PageHeader";
-import {API_URL} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {
     id: number
@@ -27,7 +27,9 @@ export default class BookItem extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/book/${this.props.id}/`)
+        fetch(`${API_URL}/book/book/${this.props.id}/`, {
+            headers: fetchHeaders()
+        })
             .then(res => res.json())
             .then(
                 (result) => {

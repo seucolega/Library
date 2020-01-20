@@ -1,8 +1,8 @@
 // @flow
 import React, {Component} from "react";
-import {API_URL} from "../container/App";
 import PersonItemInput from "./PersonItemInput";
 import Button from "react-bootstrap/Button";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {
     bookId: number,
@@ -41,7 +41,9 @@ export default class PersonInput extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/person_type/`)
+        fetch(`${API_URL}/book/person_type/`, {
+            headers: fetchHeaders()
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -60,7 +62,9 @@ export default class PersonInput extends Component<Props, State> {
                 }
             );
 
-        fetch(`${API_URL}/book/person_profile/`)
+        fetch(`${API_URL}/book/person_profile/`, {
+            headers: fetchHeaders()
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -78,7 +82,9 @@ export default class PersonInput extends Component<Props, State> {
             );
 
         for (let id of this.props.bookPersonList) {
-            fetch(`${API_URL}/book/person/${id}/`)
+            fetch(`${API_URL}/book/person/${id}/`, {
+            headers: fetchHeaders()
+        })
                 .then(res => res.json())
                 .then(
                     (result) => {

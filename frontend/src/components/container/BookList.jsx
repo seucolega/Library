@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import BookListItem from "./BookListItem";
 import PageHeader from "../presentational/PageHeader";
 import {Link} from "react-router-dom";
-import {API_URL} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {}
 
@@ -26,7 +26,9 @@ export default class BookList extends Component<Props, State> {
     }
 
     componentDidMount() {
-        fetch(`${API_URL}/book/book/`)
+        fetch(`${API_URL}/book/book/`, {
+            headers: fetchHeaders()
+        })
             .then(res => res.json())
             .then(
                 (result) => {
@@ -58,11 +60,15 @@ export default class BookList extends Component<Props, State> {
                     <PageHeader title="Livros" buttons={
                         <Link to={`/book/new`} className="btn btn-xs btn-info">Novo livro</Link>
                     }/>
-                    <ListGroup>
-                        {list.map(item => (
-                            <BookListItem key={item.id} item={item}/>
-                        ))}
-                    </ListGroup>
+                    {list ?
+                        <ListGroup>
+                            {list.map(item => (
+                                <BookListItem key={item.id} item={item}/>
+                            ))}
+                        </ListGroup>
+                        :
+                        <></>
+                    }
                 </div>
             );
         }

@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import {API_URL, FETCH_HEADERS} from "./App";
+import {API_URL, fetchHeaders} from "../../App";
 
 type Props = {
     item: Object
@@ -52,7 +52,7 @@ export default class AgeClassificationItemForm extends Component<Props, State> {
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: FETCH_HEADERS
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(

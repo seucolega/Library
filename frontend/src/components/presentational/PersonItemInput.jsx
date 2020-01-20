@@ -2,7 +2,7 @@
 import React, {Component} from "react";
 import PersonTypeInput from "./PersonTypeInput";
 import PersonProfileInput from "./PersonProfileInput";
-import {API_URL, FETCH_HEADERS} from "../container/App";
+import {API_URL, fetchHeaders} from "../../App";
 import Button from "react-bootstrap/Button";
 
 type Props = {
@@ -76,7 +76,7 @@ export default class PersonItemInput extends Component<Props, State> {
         fetch(url, {
             method: method,
             body: JSON.stringify(payload),
-            headers: FETCH_HEADERS
+            headers: fetchHeaders()
         })
             .then(res => res.json())
             .then(result => {
@@ -97,7 +97,7 @@ export default class PersonItemInput extends Component<Props, State> {
         if (this.state.confirmToRemove && action === 'remove') {
             fetch(`${API_URL}/book/person/${id}/`, {
                 method: 'DELETE',
-                headers: FETCH_HEADERS
+                headers: fetchHeaders()
             })
                 .then(() => {
                     this.setState({id: 0});
