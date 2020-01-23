@@ -8,6 +8,7 @@ import TextualClassificationInput from "../presentational/TextualClassificationI
 import {API_URL, fetchHeaders} from "../../App";
 import Alert from "react-bootstrap/Alert";
 import PersonInput from "../presentational/PersonInput";
+import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 type Props = {
     item: Object
@@ -49,51 +50,7 @@ export default class BookItemForm extends Component<Props, State> {
         this._person = React.createRef();
     }
 
-    handleTitleChange(event: SyntheticInputEvent<HTMLInputElement>) {
-        this.setState({
-            title: event.target.value
-        }, () => {
-            this.save();
-        });
-    }
-
-    handleOriginalTitleChange(event: SyntheticInputEvent<HTMLInputElement>) {
-        this.setState({
-            original_title: event.target.value
-        }, () => {
-            this.save();
-        });
-    }
-
-    handlePublisherChange(value: number) {
-        this.setState({
-            publisher: value
-        }, () => {
-            this.save();
-        });
-    }
-
-    handleAgeClassificationChange(value: Array<number>) {
-        this.setState({
-            age_classification: value
-        }, () => {
-            this.save();
-        });
-    }
-
-    handleTextualClassificationChange(value: Array<number>) {
-        this.setState({
-            textual_classification: value
-        }, () => {
-            this.save();
-        });
-    }
-
-    goBack() {
-        window.history.back();
-    }
-
-    save() {
+    saveData = () => {
         this.setState({
             isLoading: true
         });
@@ -126,8 +83,6 @@ export default class BookItemForm extends Component<Props, State> {
                             isLoading: false,
                             error: result.error
                         });
-                    } else {
-                        // this.goBack();
                     }
                 },
                 (error) => {
@@ -137,12 +92,57 @@ export default class BookItemForm extends Component<Props, State> {
                     });
                 }
             );
-    }
+    };
+    saveDebounced = AwesomeDebouncePromise(this.saveData, 500);
 
-    handleSubmit(event: Event) {
+    handleTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        this.setState({
+            title: event.target.value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handleOriginalTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        this.setState({
+            original_title: event.target.value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handlePublisherChange = (value: number) => {
+        this.setState({
+            publisher: value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handleAgeClassificationChange = (value: Array<number>) => {
+        this.setState({
+            age_classification: value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handleTextualClassificationChange = (value: Array<number>) => {
+        this.setState({
+            textual_classification: value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handleSubmit = (event: Event) => {
         event.preventDefault();
-        this.save();
-    }
+        this.saveDebounced();
+    };
+
+    goBack = () => {
+        window.history.back();
+    };
 
     render() {
         let alert;
@@ -151,14 +151,14 @@ export default class BookItemForm extends Component<Props, State> {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Form onSubmit={this.handleSubmit}>
                 {alert}
 
                 <Form.Group controlId="title">
                     <Form.Label column="">Título</Form.Label>
                     <Form.Control name="title"
                                   value={this.state.title}
-                                  onChange={this.handleTitleChange.bind(this)}
+                                  onChange={this.handleTitleChange}
                                   placeholder="Título do livro"/>
                 </Form.Group>
 
@@ -166,42 +166,31 @@ export default class BookItemForm extends Component<Props, State> {
                     <Form.Label column="">Título original</Form.Label>
                     <Form.Control name="original_title"
                                   value={this.state.original_title}
-                                  onChange={this.handleOriginalTitleChange.bind(this)}
+                                  onChange={this.handleOriginalTitleChange}
                                   placeholder="Título original do livro"/>
                 </Form.Group>
 
                 <PublisherInput ref={this._publisher}
                                 value={this.state.publisher}
-                                onChange={this.handlePublisherChange.bind(this)}/>
+                                onChange={this.handlePublisherChange}/>
 
                 <AgeClassificationInput ref={this._ageClassification}
                                         selected={this.state.age_classification}
-                                        onChange={this.handleAgeClassificationChange.bind(this)}/>
+                                        onChange={this.handleAgeClassificationChange}/>
 
                 <TextualClassificationInput ref={this._textualClassification}
                                             selected={this.state.textual_classification}
-                                            onChange={this.handleTextualClassificationChange.bind(this)}/>
+                                            onChange={this.handleTextualClassificationChange}/>
 
                 <PersonInput ref={this._person}
                              bookId={this.props.item.id}
                              bookPersonList={this.state.person}/>
 
                 <div className="mt-2 d-flex justify-content-end">
-                    {/*<Button variant="primary"*/}
-                    {/*        type="submit"*/}
-                    {/*        disabled={!this.state.isLoading}>*/}
-                    {/*    Salvar*/}
-                    {/*</Button>*/}
-                    {/*<Button variant="secondary"*/}
-                    {/*        className="ml-2"*/}
-                    {/*        disabled={!this.state.isLoading}*/}
-                    {/*        onClick={this.goBack.bind(this)}>*/}
-                    {/*    Cancelar*/}
-                    {/*</Button>*/}
                     <Button variant="secondary"
                             className="ml-2"
                             disabled={!this.state.isLoading}
-                            onClick={this.goBack.bind(this)}>
+                            onClick={this.goBack}>
                         Voltar
                     </Button>
                 </div>
