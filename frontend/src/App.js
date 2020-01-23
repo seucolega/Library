@@ -46,8 +46,9 @@ class App extends Component<Props, State> {
         this.setAuthorizationToken(key);
         this.props.cookies.set('authorizationToken', key, {
             path: '/',
-            secure: true,
-            httpOnly: true
+            // TODO: Check the options below to improve security
+            // secure: true,
+            // httpOnly: true
         });
     }
 
