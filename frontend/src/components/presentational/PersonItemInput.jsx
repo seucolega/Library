@@ -36,23 +36,23 @@ export default class PersonItemInput extends Component<Props, State> {
         this._type = React.createRef();
     }
 
-    handlePersonChange(selected: Array<Object>) {
+    handlePersonChange = (selected: Array<Object>) => {
         this.setState({
             person: typeof selected[0] != 'undefined' ? selected[0] : null
         }, () => {
-            this.saveChanges();
+            this.saveData();
         });
-    }
+    };
 
-    handleTypeChange(selected: Array<Object>) {
+    handleTypeChange = (selected: Array<Object>) => {
         this.setState({
             type: selected
         }, () => {
-            this.saveChanges();
+            this.saveData();
         });
-    }
+    };
 
-    saveChanges() {
+    saveData() {
         const {person, type} = this.state;
 
         if (!person || !type.length) {
@@ -86,7 +86,7 @@ export default class PersonItemInput extends Component<Props, State> {
             })
     }
 
-    handleRemove(action: void | string) {
+    handleRemove = (action: void | string) => {
         const id = this.state.id;
 
         if (!id) {
@@ -107,7 +107,7 @@ export default class PersonItemInput extends Component<Props, State> {
         this.setState({
             confirmToRemove: !this.state.confirmToRemove
         });
-    }
+    };
 
     render() {
         if (this.state.id < 1) {
@@ -137,13 +137,13 @@ export default class PersonItemInput extends Component<Props, State> {
                                         selected={personProfileList.filter(({id}) => {
                                             return id === bookPerson.person
                                         })}
-                                        onChange={this.handlePersonChange.bind(this)}/>
+                                        onChange={this.handlePersonChange}/>
 
                     <PersonTypeInput ref={this._type}
                                      id={bookPerson.id}
                                      personTypeList={personTypeList}
                                      selected={bookPerson.type}
-                                     onChange={this.handleTypeChange.bind(this)}/>
+                                     onChange={this.handleTypeChange}/>
                 </div>
                 <div className="d-flex justify-content-end mt-3">
                     <Button variant={buttonRemoveVariant}
@@ -154,7 +154,7 @@ export default class PersonItemInput extends Component<Props, State> {
                         this.state.confirmToRemove ? (
                             <Button variant="secondary"
                                     className="ml-2"
-                                    onClick={this.handleRemove.bind(this)}>
+                                    onClick={this.handleRemove}>
                                 Cancelar
                             </Button>
                         ) : null

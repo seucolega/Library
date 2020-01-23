@@ -30,7 +30,7 @@ export default class LoginForm extends Component<Props, State> {
         };
     }
 
-    handleSubmit(event: Event) {
+    handleSubmit = (event: Event) => {
         event.preventDefault();
 
         const payload = {
@@ -69,20 +69,19 @@ export default class LoginForm extends Component<Props, State> {
                     }
                 }
             )
-    }
+    };
 
-    handleUsernameChange(event: SyntheticInputEvent<HTMLInputElement>) {
+    handleUsernameChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         this.setState({
             username: event.target.value
         });
-    }
+    };
 
-    handlePasswordChange(event: SyntheticInputEvent<HTMLInputElement>) {
+    handlePasswordChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         this.setState({
             password: event.target.value
         });
-
-    }
+    };
 
     render() {
         let alert;
@@ -91,7 +90,7 @@ export default class LoginForm extends Component<Props, State> {
         }
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}
+            <Form onSubmit={this.handleSubmit}
                   className={`${styles.loginForm} loginForm`}>
                 {alert}
 
@@ -99,7 +98,7 @@ export default class LoginForm extends Component<Props, State> {
                     <Form.Label column="">Nome de usuário</Form.Label>
                     <Form.Control name="username"
                                   value={this.state.username}
-                                  onChange={this.handleUsernameChange.bind(this)}
+                                  onChange={this.handleUsernameChange}
                                   placeholder="Seu nome de usuário"
                                   required/>
                 </Form.Group>
@@ -109,7 +108,7 @@ export default class LoginForm extends Component<Props, State> {
                     <Form.Control name="password"
                                   type="password"
                                   value={this.state.password}
-                                  onChange={this.handlePasswordChange.bind(this)}
+                                  onChange={this.handlePasswordChange}
                                   placeholder="Sua senha"
                                   required/>
                 </Form.Group>

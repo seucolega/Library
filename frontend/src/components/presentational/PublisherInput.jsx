@@ -70,7 +70,7 @@ export default class PublisherInput extends Component<Props, State> {
         }
     }
 
-    handleChange(selected: Array<Object>) {
+    handleChange = (selected: Array<Object>) => {
         this.setState({
             selected: selected
         }, () => {
@@ -95,7 +95,7 @@ export default class PublisherInput extends Component<Props, State> {
                     this.handleOnChangeToParent();
                 }))
         }
-    }
+    };
 
     render() {
         const {error, isLoaded, list, selected} = this.state;
@@ -112,7 +112,7 @@ export default class PublisherInput extends Component<Props, State> {
                         id="publisher"
                         labelKey="name"
                         options={list}
-                        onChange={this.handleChange.bind(this)}
+                        onChange={this.handleChange}
                         defaultSelected={selected}
                         allowNew
                         newSelectionPrefix="Nova editora: "

@@ -104,7 +104,7 @@ export default class PersonInput extends Component<Props, State> {
         }
     }
 
-    handleAdd() {
+    handleAdd = () => {
         this.setState({
             bookPersonList: [...this.state.bookPersonList, {
                 book: this.props.bookId,
@@ -112,7 +112,7 @@ export default class PersonInput extends Component<Props, State> {
                 type: []
             }]
         });
-    }
+    };
 
     render() {
         const {error, isLoaded, bookPersonList, personProfileList, personTypeList} = this.state;
@@ -130,7 +130,7 @@ export default class PersonInput extends Component<Props, State> {
                         <h2 className="mb-0">Pessoas</h2>
                         <Button variant="primary"
                                 className="ml-2"
-                                onClick={this.handleAdd.bind(this)}>Incluir</Button>
+                                onClick={this.handleAdd}>Incluir</Button>
                     </div>
                     <div className="border rounded my-3">
                         {bookPersonList.map((bookPerson, index) => (

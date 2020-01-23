@@ -72,7 +72,7 @@ export default class AgeClassificationInput extends Component<Props, State> {
         }
     }
 
-    handleChange(selected: Array<Object>) {
+    handleChange = (selected: Array<Object>) => {
         const toSet = selected.filter(({id}) => {
             return !isNaN(parseInt(id, 10));
         });
@@ -101,7 +101,7 @@ export default class AgeClassificationInput extends Component<Props, State> {
                     this.handleOnChangeToParent();
                 }))
         }
-    }
+    };
 
     render() {
         const {error, isLoaded, list} = this.state;
@@ -119,7 +119,7 @@ export default class AgeClassificationInput extends Component<Props, State> {
                         id="age_classification"
                         labelKey="name"
                         options={list}
-                        onChange={this.handleChange.bind(this)}
+                        onChange={this.handleChange}
                         defaultSelected={this.state.selected}
                         multiple
                         allowNew
