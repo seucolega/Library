@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import {API_URL, fetchHeaders} from "../../App";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
 
 type Props = {
     item: Object
@@ -26,28 +27,20 @@ export default class TextualClassificationItemForm extends Component<Props, Stat
         };
     }
 
-    goBack() {
-        window.history.back();
-    }
-
-    handleNameChange(event: SyntheticInputEvent<HTMLInputElement>) {
-        this.setState({name: event.target.value});
-    }
-
-    handleSubmit(event: Event) {
-        event.preventDefault();
-        this.setState({isLoading: true});
-
-        const method = this.props.item.id ? 'PUT' : 'POST';
-
-        let url = `${API_URL}/book/textual_classification/`;
-        if (method === 'PUT') {
-            url += `${this.props.item.id}/`;
-        }
+    saveData = () => {
+this.setState({
+            isLoading: true
+        });
 
         const payload = {
             name: this.state.name
         };
+
+        let url = `${API_URL}/book/textual_classification/`;
+        const method = this.props.item.id ? 'PUT' : 'POST';
+        if (method === 'PUT') {
+            url += `${this.props.item.id}/`;
+        }
 
         fetch(url, {
             method: method,
@@ -56,24 +49,40 @@ export default class TextualClassificationItemForm extends Component<Props, Stat
         })
             .then(res => res.json())
             .then(
-                result => {
+                (result) => {
                     if (result.error) {
                         this.setState({
                             isLoading: false,
                             error: result.error
                         });
-                    } else {
-                        this.goBack();
                     }
                 },
-                error => {
+                (error) => {
                     this.setState({
                         isLoading: false,
                         error: error
                     });
                 }
-            )
-    }
+            );
+    };
+    saveDebounced = AwesomeDebouncePromise(this.saveData, 500);
+
+    handleNameChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        this.setState({
+            name: event.target.value
+        }, () => {
+            this.saveDebounced();
+        });
+    };
+
+    handleSubmit = (event: Event) => {
+        event.preventDefault();
+        this.saveDebounced();
+    };
+
+    goBack = () => {
+        window.history.back();
+    };
 
     render() {
         let alert;
@@ -82,23 +91,23 @@ export default class TextualClassificationItemForm extends Component<Props, Stat
         }
 
         return (
-            <Form onSubmit={this.handleSubmit.bind(this)}>
+            <Form onSubmit={this.handleSubmit}>
                 {alert}
 
                 <Form.Group controlId="form_name">
                     <Form.Label column="">Nome</Form.Label>
                     <Form.Control name="name"
                                   value={this.state.name}
-                                  onChange={this.handleNameChange.bind(this)}
+                                  onChange={this.handleNameChange}
                                   placeholder="Classificação"/>
                 </Form.Group>
 
-                <div className="mt-2">
-                    <Button variant="primary" type="submit" disabled={this.state.isLoading}>
-                        Salvar
-                    </Button>
-                    <Button variant="secondary" className="ml-2" disabled={this.state.isLoading} onClick={this.goBack.bind(this)}>
-                        Cancelar
+                <div className="mt-2 d-flex justify-content-end">
+                    <Button variant="secondary"
+                            className="ml-2"
+                            disabled={!this.state.isLoading}
+                            onClick={this.goBack}>
+                        Voltar
                     </Button>
                 </div>
             </Form>
