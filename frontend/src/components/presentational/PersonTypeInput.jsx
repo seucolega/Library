@@ -47,7 +47,7 @@ export default class PersonTypeInput extends Component<Props, State> {
         }
     }
 
-    handleChange(selected: Array<Object>) {
+    handleChange = (selected: Array<Object>) => {
         this.setState({
             selected: selected
         }, () => {
@@ -72,7 +72,7 @@ export default class PersonTypeInput extends Component<Props, State> {
                     this.handleOnChangeToParent();
                 }))
         }
-    }
+    };
 
     render() {
         const controlId = `person_type_${this.props.id}`;
@@ -85,7 +85,7 @@ export default class PersonTypeInput extends Component<Props, State> {
                     id={controlId}
                     labelKey="name"
                     options={this.state.list}
-                    onChange={this.handleChange.bind(this)}
+                    onChange={this.handleChange}
                     defaultSelected={this.state.selected}
                     multiple
                     allowNew

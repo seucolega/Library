@@ -42,7 +42,7 @@ class App extends Component<Props, State> {
         };
     }
 
-    handleLogin(key: string) {
+    handleLogin = (key: string) => {
         this.setAuthorizationToken(key);
         this.props.cookies.set('authorizationToken', key, {
             path: '/',
@@ -50,9 +50,9 @@ class App extends Component<Props, State> {
             // secure: true,
             // httpOnly: true
         });
-    }
+    };
 
-    handleLogout() {
+    handleLogout = () => {
         if (this.state.isLoggedIn) {
             _authorizationToken = null;
             this.props.cookies.remove('authorizationToken');
@@ -62,7 +62,7 @@ class App extends Component<Props, State> {
                 isLoggedIn: Boolean(_authorizationToken)
             });
         }
-    }
+    };
 
     render() {
         const isLoggedIn = this.state.isLoggedIn;
@@ -76,8 +76,8 @@ class App extends Component<Props, State> {
                     }
 
                     <Main isLoggedIn={isLoggedIn}
-                          onLogin={this.handleLogin.bind(this)}
-                          onLogout={this.handleLogout.bind(this)}/>
+                          onLogin={this.handleLogin}
+                          onLogout={this.handleLogout}/>
                 </div>
             </div>
         )

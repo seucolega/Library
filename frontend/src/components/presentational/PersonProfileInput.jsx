@@ -36,7 +36,7 @@ export default class PersonProfileInput extends Component<Props, State> {
         }
     }
 
-    handleChange(selected: Array<Object>) {
+    handleChange = (selected: Array<Object>) => {
         const toSet = selected.filter(({id}) => {
             return !isNaN(parseInt(id, 10));
         });
@@ -67,7 +67,7 @@ export default class PersonProfileInput extends Component<Props, State> {
                     this.handleOnChangeToParent();
                 }))
         }
-    }
+    };
 
     render() {
         return (
@@ -78,7 +78,7 @@ export default class PersonProfileInput extends Component<Props, State> {
                     id={this.props.id}
                     labelKey="name"
                     options={this.state.list}
-                    onChange={this.handleChange.bind(this)}
+                    onChange={this.handleChange}
                     defaultSelected={this.props.selected}
                     allowNew
                     newSelectionPrefix="Nova pessoa: "
