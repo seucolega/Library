@@ -8,7 +8,6 @@ import AgeClassification from "./AgeClassification";
 import TextualClassification from "./TextualClassification";
 import {PrivateRoute} from "../../App";
 import TopNav from "../presentational/TopNav";
-// import PageHeader from "../presentational/PageHeader";
 import LoginPage from "./LoginPage";
 
 type Props = {
