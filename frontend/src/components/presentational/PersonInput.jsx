@@ -122,7 +122,7 @@ export default class PersonInput extends Component<Props, State> {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else if (!this.props.bookId) {
-            return <div>Oops...</div>;
+            return <></>;
         } else {
             return (
                 <fieldset className="my-4">

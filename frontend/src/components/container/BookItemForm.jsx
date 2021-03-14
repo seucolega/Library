@@ -39,7 +39,7 @@ export default class BookItemForm extends Component<Props, State> {
             publisher: this.props.item.publisher,
             age_classification: this.props.item.age_classification,
             textual_classification: this.props.item.textual_classification,
-            person: this.props.item.person_set,
+            person: this.props.item.person_set || [],
             isLoading: true,
             error: null
         };
