@@ -9,6 +9,7 @@ import TextualClassification from "./TextualClassification";
 import {PrivateRoute} from "../../App";
 import TopNav from "../presentational/TopNav";
 import LoginPage from "./LoginPage";
+import Inventory from "./Inventory";
 
 type Props = {
     isLoggedIn: boolean,
@@ -70,6 +71,9 @@ export default class Main extends Component<Props> {
                         <PrivateRoute isLoggedIn={isLoggedIn}
                                       path="/textual_classification/:id"
                                       component={TextualClassification}/>
+                        <PrivateRoute isLoggedIn={isLoggedIn}
+                                      path="/inventory"
+                                      component={Inventory}/>
                     </Switch>
                 </div>
             </div>

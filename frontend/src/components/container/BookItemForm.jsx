@@ -11,10 +11,12 @@ import PersonInput from "../presentational/PersonInput";
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 
 type Props = {
-    item: Object
+    item?: Object
 };
 
 type State = {
+    id: number,
+    gtin: string,
     title: string,
     original_title: string,
     publisher: number,
@@ -33,13 +35,18 @@ export default class BookItemForm extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
+
+        const item = props.item || {}
+
         this.state = {
-            title: this.props.item.title,
-            original_title: this.props.item.original_title,
-            publisher: this.props.item.publisher,
-            age_classification: this.props.item.age_classification,
-            textual_classification: this.props.item.textual_classification,
-            person: this.props.item.person_set || [],
+            id: item.id || null,
+            gtin: item.gtin || "",
+            title: item.title || "",
+            original_title: item.original_title || "",
+            publisher: item.publisher || "",
+            age_classification: item.age_classification || [],
+            textual_classification: item.textual_classification || [],
+            person: item.person_set || [],
             isLoading: true,
             error: null
         };
@@ -56,6 +63,7 @@ export default class BookItemForm extends Component<Props, State> {
         });
 
         const payload = {
+            gtin: this.state.gtin,
             title: this.state.title,
             original_title: this.state.original_title,
             publisher: this.state.publisher,
@@ -65,9 +73,9 @@ export default class BookItemForm extends Component<Props, State> {
         };
 
         let url = `${API_URL}/book/book/`;
-        const method = this.props.item.id ? 'PUT' : 'POST';
+        const method = this.state.id ? 'PUT' : 'POST';
         if (method === 'PUT') {
-            url += `${this.props.item.id}/`;
+            url += `${this.state.id}/`;
         }
 
         fetch(url, {
@@ -80,6 +88,7 @@ export default class BookItemForm extends Component<Props, State> {
                 (result) => {
                     if (result.error) {
                         this.setState({
+                            id: result.id,
                             isLoading: false,
                             error: result.error
                         });
@@ -94,6 +103,14 @@ export default class BookItemForm extends Component<Props, State> {
             );
     };
     saveDebounced = AwesomeDebouncePromise(this.saveData, 500);
+
+    handleGtinChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        let value = event.target.value.match(/\d/g)
+        if (value instanceof Array) {
+            value = value.join("")
+        }
+        this.setState({gtin: String(value || "")}, this.saveDebounced);
+    };
 
     handleTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         this.setState({
@@ -145,14 +162,17 @@ export default class BookItemForm extends Component<Props, State> {
     };
 
     render() {
-        let alert;
-        if (this.state.error) {
-            alert = <Alert variant="danger">{this.state.error}</Alert>
-        }
-
         return (
             <Form onSubmit={this.handleSubmit}>
-                {alert}
+                {this.state.error ? <Alert variant="danger">{this.state.error}</Alert> : <></>}
+
+                <Form.Group controlId="gtin">
+                    <Form.Label column="">Código de barras</Form.Label>
+                    <Form.Control name="gtin"
+                                  value={this.state.gtin}
+                                  onChange={this.handleGtinChange}
+                                  placeholder="Exemplo: 9788535906509"/>
+                </Form.Group>
 
                 <Form.Group controlId="title">
                     <Form.Label column="">Título</Form.Label>
@@ -182,9 +202,13 @@ export default class BookItemForm extends Component<Props, State> {
                                             selected={this.state.textual_classification}
                                             onChange={this.handleTextualClassificationChange}/>
 
-                <PersonInput ref={this._person}
-                             bookId={this.props.item.id}
-                             bookPersonList={this.state.person}/>
+                {
+                    this.props.item && this.props.item.id ?
+                        <PersonInput ref={this._person}
+                                     bookId={this.props.item.id}
+                                     bookPersonList={this.state.person}/>
+                        : <></>
+                }
 
                 <div className="mt-2 d-flex justify-content-end">
                     <Button variant="secondary"
