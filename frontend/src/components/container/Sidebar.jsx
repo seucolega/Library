@@ -32,6 +32,9 @@ export default class Sidebar extends Component<Props> {
                         <LinkContainer to="/textual_classification">
                             <ListGroup.Item action>Classificação textual</ListGroup.Item>
                         </LinkContainer>
+                        <LinkContainer to="/inventory">
+                            <ListGroup.Item action>Inventário</ListGroup.Item>
+                        </LinkContainer>
                         {/*<LinkContainer to="/person">*/}
                         {/*    <ListGroup.Item action>Pessoas</ListGroup.Item>*/}
                         {/*</LinkContainer>*/}

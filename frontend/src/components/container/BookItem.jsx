@@ -14,7 +14,6 @@ type State = {
     error: void | Object
 }
 
-
 export default class BookItem extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
@@ -32,14 +31,14 @@ export default class BookItem extends Component<Props, State> {
         })
             .then(res => res.json())
             .then(
-                (result) => {
+                result => {
                     this.setState({
                         item: result,
                         isLoading: false,
                         error: result.error
                     });
                 },
-                (error) => {
+                error => {
                     this.setState({
                         isLoading: false,
                         error: error

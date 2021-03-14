@@ -7,19 +7,10 @@ type Props = {};
 
 export default class BookItemNew extends Component<Props> {
     render() {
-        const item = {
-            title: '',
-            original_title: '',
-            publisher: '',
-            age_classification: [],
-            textual_classification: [],
-            person: [],
-        };
-
         return (
             <div>
                 <PageHeader title="Novo livro"/>
-                <BookItemForm item={item}/>
+                <BookItemForm/>
             </div>
         )
     }
