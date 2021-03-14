@@ -43,66 +43,6 @@ class TextualClassification(models.Model):
         return self.name
 
 
-# class BookPersonAuthorship(models.Model):
-#     name = models.CharField(max_length=100)
-#
-#     class Meta:
-#         verbose_name = 'Author'
-#         verbose_name_plural = 'Authors'
-#         ordering = ['name']
-#
-#     def __str__(self):
-#         return self.name
-#
-#
-# class BookPersonIllustration(models.Model):
-#     name = models.CharField(max_length=100)
-#
-#     class Meta:
-#         verbose_name = 'Illustrator'
-#         verbose_name_plural = 'Illustrators'
-#         ordering = ['name']
-#
-#     def __str__(self):
-#         return self.name
-#
-#
-# class BookPersonTranslation(models.Model):
-#     name = models.CharField(max_length=100)
-#
-#     class Meta:
-#         verbose_name = 'Translator'
-#         verbose_name_plural = 'Translators'
-#         ordering = ['name']
-#
-#     def __str__(self):
-#         return self.name
-#
-#
-# class BookPersonOrganization(models.Model):
-#     name = models.CharField(max_length=100)
-#
-#     class Meta:
-#         verbose_name = 'Organizer'
-#         verbose_name_plural = 'Organizers'
-#         ordering = ['name']
-#
-#     def __str__(self):
-#         return self.name
-
-
-# class BookCollection(models.Model):
-#     name = models.CharField(max_length=50)
-#
-#     class Meta:
-#         verbose_name = 'Collection'
-#         verbose_name_plural = 'Collections'
-#         ordering = ['name']
-#
-#     def __str__(self):
-#         return self.name
-
-
 class PersonType(models.Model):
     name = models.CharField(max_length=30)
 
@@ -127,23 +67,6 @@ class PersonProfile(models.Model):
         return self.name
 
 
-# class BookPerson(models.Model):
-#     person = models.ForeignKey(BookPersonProfile, on_delete=models.PROTECT)
-#     type = models.ManyToManyField(BookPersonType)
-#
-#     class Meta:
-#         verbose_name = 'Person (Book)'
-#         verbose_name_plural = 'People (Book)'
-#         ordering = ['person__name']
-#
-#     @property
-#     def type_verbose(self):
-#         return ', '.join([t.name for t in self.type.only('name')])
-#
-#     def __str__(self):
-#         return f'{self.person.name} ({self.type_verbose})'
-
-
 class Book(models.Model):
     title = models.CharField(max_length=100)
     original_title = models.CharField(max_length=100)
@@ -151,15 +74,8 @@ class Book(models.Model):
     age_classification = models.ManyToManyField(AgeClassification)
     # TODO: Transformar relacionamento com classificação textual em ManyToOne
     textual_classification = models.ManyToManyField(TextualClassification)
-
-    # authorship = models.ManyToManyField(BookPersonAuthorship)
-    # illustration = models.ManyToManyField(BookPersonIllustration, null=True)
-    # translation = models.ManyToManyField(BookPersonTranslation, null=True)
-    # organization = models.ManyToManyField(BookPersonOrganization, null=True)
-    # collection = models.ManyToManyField(BookCollection, null=True)
-    # image = models.ImageField(null=True, blank=True)
-    # checksum = models.CharField(max_length=32, blank=True, null=True)
-    # estoque
+    gtin = models.CharField(max_length=13, blank=True, null=True)
+    stock_quantity = models.IntegerField(default=0)
 
     class Meta:
         verbose_name = 'Book'
@@ -168,28 +84,6 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
-    # @property
-    # def person(self):
-    #     return self.bookperson_set.all()
-
-    # @person.setter
-    # def person(self, value):
-    #     current = set(self.person)
-    #     value = [p.id for p in value]
-    #     for book_person in current.difference(value):
-    #         book_person.delete()
-    #     for book_person in set(value).difference(current):
-    #         book_person.update({'book': self.pk})
-    #         BookPerson(book_person).save()
-
-    # def _update_md5(self):
-    #     if self.image:
-    #         self.checksum = hash_file(self.image)
-    #
-    # def save(self, *args, **kwargs):
-    #     self._update_md5()
-    #     super().save(*args, **kwargs)
 
 
 class Person(models.Model):

@@ -62,6 +62,8 @@ class BookSerializer(serializers.ModelSerializer):
             'age_classification',
             'textual_classification',
             'person_set',
+            'gtin',
+            'stock_quantity'
         ]
 
     # def to_representation(self, value):
