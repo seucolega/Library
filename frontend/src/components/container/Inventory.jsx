@@ -55,9 +55,8 @@ export default class Inventory extends Component<Props, State> {
 
         fetch(url, {method: "POST", headers: fetchHeaders(), body: JSON.stringify(payload)})
             .then(res => {
-                this.setState({
-                    list: [...list.filter(item => item.gtin !== gtin), {...item, responseStatus: res.status}]
-                })
+                item = {...item, responseStatus: res.status}
+                this.setState({list: [...list.filter(item => item.gtin !== gtin), item]})
                 return res.json()
             })
             .then(
