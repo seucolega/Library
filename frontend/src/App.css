@@ -57,3 +57,8 @@ body {
 .border.rounded > .border-top:first-child {
     border-top: 0 !important;
 }
+
+.card .list-group {
+    border: none;
+    padding: 0 1.25rem 1.25rem;
+}

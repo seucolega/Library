@@ -1,10 +1,9 @@
 from django.template.defaultfilters import slugify
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from book.models import AgeClassification, Book, Person, PersonProfile, PersonType, Publisher, TextualClassification
-from rest_framework import viewsets, status
-
 from . import metabooks_api
 from .serializers import (
     AgeClassificationSerializer,
@@ -13,7 +12,7 @@ from .serializers import (
     PersonSerializer,
     PersonTypeSerializer,
     PublisherSerializer,
-    TextualClassificationSerializer,
+    TextualClassificationSerializer, BookInventorySerializer,
 )
 
 
@@ -53,14 +52,16 @@ class BookViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def inventory(self, request):
-        # gtin = self.request.query_params.get("gtin")
-        gtin = self.request.data.get("gtin")
-        # return Response(gtin, status=status.HTTP_200_OK)
+        try:
+            gtin = self.request.data["gtin"]
+            quantity = self.request.data["quantity"]
+        except KeyError:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         book = Book.objects.filter(gtin=gtin).first()
         if book:
             # TODO: criar função para fazer a entrada de um item no estoque
-            book.stock_quantity += 1
+            book.stock_quantity += quantity
             book.save()
         else:
             # TODO: se nao tiver, verificar no metabooks
@@ -90,6 +91,6 @@ class BookViewSet(viewsets.ModelViewSet):
                 book.save()
 
         if book:
-            serializer = BookSerializer(book)
+            serializer = BookInventorySerializer(book)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)

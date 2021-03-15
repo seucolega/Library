@@ -40,39 +40,34 @@ export default class Main extends Component<Props> {
                             }
                         </Route>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/"
-                                      exact
+                                      exact path="/"
                                       component={Home}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/book"
-                                      exact
+                                      exact path="/book"
                                       component={Book}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
                                       path="/book/:id"
                                       component={Book}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/publisher"
-                                      exact
+                                      exact path="/publisher"
                                       component={Publisher}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/publisher/:id"
+                                      exact path="/publisher/:id"
                                       component={Publisher}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/age_classification"
-                                      exact
+                                      exact path="/age_classification"
                                       component={AgeClassification}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/age_classification/:id"
+                                      exact path="/age_classification/:id"
                                       component={AgeClassification}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/textual_classification"
-                                      exact
+                                      exact path="/textual_classification"
                                       component={TextualClassification}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/textual_classification/:id"
+                                      exact path="/textual_classification/:id"
                                       component={TextualClassification}/>
                         <PrivateRoute isLoggedIn={isLoggedIn}
-                                      path="/inventory"
+                                      exact path="/inventory"
                                       component={Inventory}/>
                     </Switch>
                 </div>

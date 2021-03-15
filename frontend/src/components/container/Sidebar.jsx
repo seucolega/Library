@@ -20,24 +20,21 @@ export default class Sidebar extends Component<Props> {
                         <ListGroup.Item action>Início</ListGroup.Item>
                     </LinkContainer>
                     {isLoggedIn && <>
-                        <LinkContainer to="/book">
+                        <LinkContainer exact to="/book">
                             <ListGroup.Item action>Livros</ListGroup.Item>
                         </LinkContainer>
-                        <LinkContainer to="/publisher">
+                        <LinkContainer exact to="/publisher">
                             <ListGroup.Item action>Editoras</ListGroup.Item>
                         </LinkContainer>
-                        <LinkContainer to="/age_classification">
+                        <LinkContainer exact to="/age_classification">
                             <ListGroup.Item action>Classificação etária</ListGroup.Item>
                         </LinkContainer>
-                        <LinkContainer to="/textual_classification">
+                        <LinkContainer exact to="/textual_classification">
                             <ListGroup.Item action>Classificação textual</ListGroup.Item>
                         </LinkContainer>
-                        <LinkContainer to="/inventory">
+                        <LinkContainer strict to="/inventory">
                             <ListGroup.Item action>Inventário</ListGroup.Item>
                         </LinkContainer>
-                        {/*<LinkContainer to="/person">*/}
-                        {/*    <ListGroup.Item action>Pessoas</ListGroup.Item>*/}
-                        {/*</LinkContainer>*/}
                     </>
                     }
                 </ListGroup>
