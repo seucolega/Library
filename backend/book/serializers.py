@@ -83,3 +83,16 @@ class BookSerializer(serializers.ModelSerializer):
     #     del validated_data['person']
     #     instance = super().create(validated_data)
     #     return instance
+
+
+class BookInventorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        depth = 2
+        fields = [
+            'id',
+            'title',
+            'publisher',
+            'gtin',
+            'stock_quantity'
+        ]
