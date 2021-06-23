@@ -5,7 +5,7 @@
   "proxy": "http://localhost:8000",
   "dependencies": {
     "awesome-debounce-promise": "^2.1.0",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^5.0.2",
     "flow-bin": "^0.116.1",
     "http-proxy-middleware": "^0.20.0",
     "react": "^16.12.0",
