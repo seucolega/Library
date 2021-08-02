@@ -2,21 +2,11 @@
 import React, {Component} from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import {Button, ButtonGroup, ButtonToolbar, InputGroup} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMinus, faPlus} from '@fortawesome/free-solid-svg-icons'
 import {LinkContainer} from "react-router-bootstrap";
-
-type Props = {
-    gtin: string,
-    processItem: Function,
-    response?: InventoryResponse,
-    responseStatus?: number,
-    isLoading?: boolean,
-    error?: void | Object
-};
 
 type InventoryResponse = {
     id: number,
@@ -26,6 +16,15 @@ type InventoryResponse = {
         name: string
     },
     stock_quantity: number
+};
+
+type Props = {
+    gtin: string,
+    processItem: Function,
+    response?: InventoryResponse,
+    responseStatus?: number,
+    isLoading?: boolean,
+    error?: void | Object
 };
 
 type State = {
@@ -68,7 +67,7 @@ export default class InventoryItem extends Component<Props, State> {
                         <Card.Text className="small font-weight-light">{response.publisher.name}</Card.Text>
                     </Card.Body>
                     <ListGroup variant="flush" className="p-0">
-                        <ListGroupItem className="d-flex pb-4 justify-content-between align-items-center">
+                        <ListGroup.Item className="d-flex pb-4 justify-content-between align-items-center">
                             <span>Quantidade atual</span>
                             <span>
                                 <InputGroup>
@@ -92,7 +91,7 @@ export default class InventoryItem extends Component<Props, State> {
                                     </InputGroup.Append>
                                 </InputGroup>
                             </span>
-                        </ListGroupItem>
+                        </ListGroup.Item>
                     </ListGroup>
                     <ListGroup className="align-items-end pb-4">
                         <ButtonToolbar>
