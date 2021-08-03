@@ -12,7 +12,7 @@ type Props = {
 }
 
 type InventoryItemValue = {
-    gtin: string,
+    ean: string,
     response?: Object,
     responseStatus?: number,
     isLoading: boolean,
@@ -35,13 +35,13 @@ export default class Inventory extends Component<Props, State> {
         }
     }
 
-    handleProcessItem = (gtin: string, quantity: number) => {
+    handleProcessItem = (ean: string, quantity: number) => {
         const {list} = this.state
-        let item = list.find(item => item.gtin === gtin) || {gtin: String(gtin), isLoading: false}
+        let item = list.find(item => item.ean === ean) || {ean: String(ean), isLoading: false}
 
-        if (item && !item.isLoading && gtin && gtin.length === 13) {
+        if (item && !item.isLoading && ean && ean.length === 13) {
             this.setState({
-                list: [...list.filter(item => item.gtin !== gtin), {...item, isLoading: true}]
+                list: [...list.filter(item => item.ean !== ean), {...item, isLoading: true}]
             })
         } else {
             return
@@ -49,14 +49,14 @@ export default class Inventory extends Component<Props, State> {
 
         const url = `${API_URL}/book/book/inventory/`;
         const payload = {
-            gtin: gtin,
+            ean: ean,
             quantity: quantity
         }
 
         fetch(url, {method: "POST", headers: fetchHeaders(), body: JSON.stringify(payload)})
             .then(res => {
                 item = {...item, responseStatus: res.status}
-                this.setState({list: [...list.filter(item => item.gtin !== gtin), item]})
+                this.setState({list: [...list.filter(item => item.ean !== ean), item]})
                 return res.json()
             })
             .then(
@@ -69,21 +69,21 @@ export default class Inventory extends Component<Props, State> {
             )
             .finally(
                 () => this.setState({
-                    list: [...list.filter(item => item.gtin !== gtin), {...item, isLoading: false}]
+                    list: [...list.filter(item => item.ean !== ean), {...item, isLoading: false}]
                 })
             )
     }
 
     handleQueryChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-        let gtin = event.target.value.match(/\d/g) || ""
-        if (gtin instanceof Array) {
-            gtin = gtin.join("")
+        let ean = event.target.value.match(/\d/g) || ""
+        if (ean instanceof Array) {
+            ean = ean.join("")
         }
-        if (gtin && gtin.length === 13) {
-            this.handleProcessItem(String(gtin), 1)
-            gtin = ""
+        if (ean && ean.length === 13) {
+            this.handleProcessItem(String(ean), 1)
+            ean = ""
         }
-        this.setState({query: String(gtin)})
+        this.setState({query: String(ean)})
     }
 
     render() {
@@ -105,9 +105,9 @@ export default class Inventory extends Component<Props, State> {
                 </Form.Group>
 
                 <ListGroup>
-                    {list.map(({gtin, response, responseStatus}, index) => (
+                    {list.map(({ean, response, responseStatus}, index) => (
                         <InventoryItem key={index}
-                                       gtin={gtin}
+                                       ean={ean}
                                        response={response}
                                        responseStatus={responseStatus}
                                        processItem={this.handleProcessItem}/>

@@ -74,7 +74,7 @@ class Book(models.Model):
     age_classification = models.ManyToManyField(AgeClassification)
     # TODO: Transformar relacionamento com classificação textual em ManyToOne
     textual_classification = models.ManyToManyField(TextualClassification)
-    gtin = models.CharField(max_length=13, blank=True, null=True)
+    ean = models.CharField(max_length=13, blank=True, null=True)
     stock_quantity = models.IntegerField(default=0)
 
     class Meta:

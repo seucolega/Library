@@ -62,7 +62,7 @@ class BookSerializer(serializers.ModelSerializer):
             'age_classification',
             'textual_classification',
             'person_set',
-            'gtin',
+            'ean',
             'stock_quantity'
         ]
 
@@ -93,6 +93,6 @@ class BookInventorySerializer(serializers.ModelSerializer):
             'id',
             'title',
             'publisher',
-            'gtin',
+            'ean',
             'stock_quantity'
         ]
