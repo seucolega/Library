@@ -19,10 +19,10 @@ django = "*"
 djangorestframework = "*"
 psycopg2 = "*"
 django-rest-auth = "*"
-django-cors-headers = "*"
 python-decouple = "*"
 dj-database-url = "*"
 requests = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.9"

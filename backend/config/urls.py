@@ -24,4 +24,7 @@ urlpatterns = [
     path('api/ping/', core_views.ping),
     path('api/book/', include(book_urls)),
     path('api/rest-auth/', include('rest_auth.urls')),
+    path('', core_views.index, name="index"),
 ]
+
+handler404 = 'core.views.index'
