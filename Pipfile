@@ -23,6 +23,7 @@ python-decouple = "*"
 dj-database-url = "*"
 requests = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.9"
