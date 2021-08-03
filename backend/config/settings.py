@@ -37,19 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'corsheaders',
     'core',
     'book',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,7 +63,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        # 'DIRS': ['templates'],
+        'DIRS': [os.path.join(BASE_DIR, '../build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,6 +112,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'build', 'static')
+
+STATICFILES_DIRS = []
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# MEDIA_URL = "/media/"
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Django Rest Framework
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -122,12 +135,10 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
 }
 
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
-
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
-
 # Other settings
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Internal IPs
+
+INTERNAL_IPS = ["127.0.0.1"]
