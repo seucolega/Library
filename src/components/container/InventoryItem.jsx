@@ -10,7 +10,7 @@ import {LinkContainer} from "react-router-bootstrap";
 
 type InventoryResponse = {
     id: number,
-    gtin: string,
+    ean: string,
     title: string,
     publisher: {
         name: string
@@ -19,7 +19,7 @@ type InventoryResponse = {
 };
 
 type Props = {
-    gtin: string,
+    ean: string,
     processItem: Function,
     response?: InventoryResponse,
     responseStatus?: number,
@@ -47,13 +47,13 @@ export default class InventoryItem extends Component<Props, State> {
     }
 
     render() {
-        const {gtin, processItem, isLoading, response, responseStatus, error} = this.props
+        const {ean, processItem, isLoading, response, responseStatus, error} = this.props
 
         if (isLoading) {
             return (
                 <Card className="my-2">
                     <Card.Body>
-                        <p className="m-0 text-muted">{`Procurando ${gtin}`}</p>
+                        <p className="m-0 text-muted">{`Procurando ${ean}`}</p>
                     </Card.Body>
                 </Card>
             )
@@ -74,7 +74,7 @@ export default class InventoryItem extends Component<Props, State> {
                                     <InputGroup.Prepend>
                                         <Button variant="primary"
                                                 disabled={isLoading}
-                                                onClick={() => !isLoading ? processItem(gtin, -1) : null}>
+                                                onClick={() => !isLoading ? processItem(ean, -1) : null}>
                                             <FontAwesomeIcon icon={faMinus}/>
                                         </Button>
                                     </InputGroup.Prepend>
@@ -85,7 +85,7 @@ export default class InventoryItem extends Component<Props, State> {
                                     <InputGroup.Append>
                                         <Button variant="primary"
                                                 disabled={isLoading}
-                                                onClick={() => !isLoading ? processItem(gtin, 1) : null}>
+                                                onClick={() => !isLoading ? processItem(ean, 1) : null}>
                                             <FontAwesomeIcon icon={faPlus}/>
                                         </Button>
                                     </InputGroup.Append>
@@ -107,7 +107,7 @@ export default class InventoryItem extends Component<Props, State> {
         } else {
             let alert
             if (responseStatus === 404) {
-                alert = `Livro não encontrado: ${gtin}`
+                alert = `Livro não encontrado: ${ean}`
             } else {
                 alert = error && error.message ? error.message : "Erro desconhecido"
             }

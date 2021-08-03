@@ -16,7 +16,7 @@ type Props = {
 
 type State = {
     id: number,
-    gtin: string,
+    ean: string,
     title: string,
     original_title: string,
     publisher: number,
@@ -40,7 +40,7 @@ export default class BookItemForm extends Component<Props, State> {
 
         this.state = {
             id: item.id || null,
-            gtin: item.gtin || "",
+            ean: item.ean || "",
             title: item.title || "",
             original_title: item.original_title || "",
             publisher: item.publisher || "",
@@ -63,7 +63,7 @@ export default class BookItemForm extends Component<Props, State> {
         });
 
         const payload = {
-            gtin: this.state.gtin,
+            ean: this.state.ean,
             title: this.state.title,
             original_title: this.state.original_title,
             publisher: this.state.publisher,
@@ -104,12 +104,12 @@ export default class BookItemForm extends Component<Props, State> {
     };
     saveDebounced = AwesomeDebouncePromise(this.saveData, 500);
 
-    handleGtinChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    handleEanChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         let value = event.target.value.match(/\d/g)
         if (value instanceof Array) {
             value = value.join("")
         }
-        this.setState({gtin: String(value || "")}, this.saveDebounced);
+        this.setState({ean: String(value || "")}, this.saveDebounced);
     };
 
     handleTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -166,11 +166,11 @@ export default class BookItemForm extends Component<Props, State> {
             <Form onSubmit={this.handleSubmit}>
                 {this.state.error ? <Alert variant="danger">{this.state.error}</Alert> : <></>}
 
-                <Form.Group controlId="gtin">
+                <Form.Group controlId="ean">
                     <Form.Label column="">Código de barras</Form.Label>
-                    <Form.Control name="gtin"
-                                  value={this.state.gtin}
-                                  onChange={this.handleGtinChange}
+                    <Form.Control name="ean"
+                                  value={this.state.ean}
+                                  onChange={this.handleEanChange}
                                   placeholder="Exemplo: 9788535906509"/>
                 </Form.Group>
 
