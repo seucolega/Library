@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
+    'djoser',
     'core',
     'book',
 ]
