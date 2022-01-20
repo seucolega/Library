@@ -39,7 +39,7 @@ export default class LoginForm extends Component<Props, State> {
             password: this.state.password
         };
 
-        fetch(`${API_URL}/rest-auth/login/`, {
+        fetch(`${API_URL}/auth/token/login/`, {
             headers: fetchHeaders(),
             method: 'POST',
             body: JSON.stringify(payload)
@@ -47,13 +47,12 @@ export default class LoginForm extends Component<Props, State> {
             .then(res => res.json())
             .then(
                 (result) => {
-                    if (result.key) {
+                    if (result.auth_token) {
                         if (typeof this.props.onLogin === "function") {
                             this.setState({
-                                username: '',
-                                password: ''
+                                username: '', password: ''
                             });
-                            this.props.onLogin(result.key);
+                            this.props.onLogin(result.auth_token);
                         }
                     } else {
                         let error = 'Generic error.';
