@@ -1,4 +1,11 @@
-from book.models import AgeClassification, Book, Person, PersonType, Publisher, TextualClassification
+from book.models import (
+    AgeClassification,
+    Book,
+    Person,
+    PersonType,
+    Publisher,
+    TextualClassification,
+)
 from django.db import IntegrityError
 from django.utils.translation import gettext as _
 from rest_framework import serializers
@@ -63,7 +70,7 @@ class BookSerializer(serializers.ModelSerializer):
             'textual_classification',
             'person_set',
             'ean',
-            'stock_quantity'
+            'stock_quantity',
         ]
 
     # def to_representation(self, value):
@@ -89,10 +96,4 @@ class BookInventorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         depth = 2
-        fields = [
-            'id',
-            'title',
-            'publisher',
-            'ean',
-            'stock_quantity'
-        ]
+        fields = ['id', 'title', 'publisher', 'ean', 'stock_quantity']

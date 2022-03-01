@@ -1,18 +1,27 @@
+from book.models import (
+    AgeClassification,
+    Book,
+    Person,
+    PersonProfile,
+    PersonType,
+    Publisher,
+    TextualClassification,
+)
 from django.template.defaultfilters import slugify
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from book.models import AgeClassification, Book, Person, PersonProfile, PersonType, Publisher, TextualClassification
 from . import metabooks_api
 from .serializers import (
     AgeClassificationSerializer,
+    BookInventorySerializer,
     BookSerializer,
     PersonProfileSerializer,
     PersonSerializer,
     PersonTypeSerializer,
     PublisherSerializer,
-    TextualClassificationSerializer, BookInventorySerializer,
+    TextualClassificationSerializer,
 )
 
 
@@ -63,8 +72,7 @@ class BookViewSet(viewsets.ModelViewSet):
             # TODO: se nao tiver, verificar no metabooks
             metabooks_instance = metabooks_api.MetabooksAPI()
             metabooks_json = metabooks_api.get_product_json_from_ean(
-                metabooks_instance=metabooks_instance,
-                product_ean=ean
+                metabooks_instance=metabooks_instance, product_ean=ean
             )
             if metabooks_json:
                 book = Book(ean=ean)
@@ -77,10 +85,12 @@ class BookViewSet(viewsets.ModelViewSet):
                 #         book.description = title.get("text")
 
                 if len(metabooks_json.get('publishers', [])):
-                    publisher_name = metabooks_json['publishers'][0]['publisherName']
+                    publisher_name = metabooks_json['publishers'][0][
+                        'publisherName'
+                    ]
                     publisher, created = Publisher.objects.get_or_create(
                         slug=slugify(publisher_name),
-                        defaults={'name': publisher_name}
+                        defaults={'name': publisher_name},
                     )
                     book.publisher = publisher
 

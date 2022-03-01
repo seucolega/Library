@@ -10,7 +10,12 @@ from .models import Book
 def book_list(request):
     search_for = request.POST.get('search', '')
     return render(
-        request, 'book_list.html', {'list': Book.objects.filter(title__icontains=search_for), 'search_for': search_for}
+        request,
+        'book_list.html',
+        {
+            'list': Book.objects.filter(title__icontains=search_for),
+            'search_for': search_for,
+        },
     )
     # return render(request, 'book_list.html', {'list': Book.objects.all()})
 

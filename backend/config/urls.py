@@ -25,7 +25,7 @@ urlpatterns = [
     path('api/book/', include(book_urls)),
     re_path(r'^api/auth/', include('djoser.urls')),
     re_path(r'^api/auth/', include('djoser.urls.authtoken')),
-    path('', core_views.index, name="index"),
+    path('', core_views.index, name='index'),
 ]
 
 handler404 = 'core.views.index'

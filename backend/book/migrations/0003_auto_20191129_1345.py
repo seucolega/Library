@@ -9,5 +9,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(model_name='publisher', name='slug', field=models.SlugField(unique=True),),
+        migrations.AlterField(
+            model_name='publisher',
+            name='slug',
+            field=models.SlugField(unique=True),
+        ),
     ]
