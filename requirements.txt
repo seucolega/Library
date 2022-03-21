@@ -15,7 +15,7 @@ coverage==6.3.2
 cryptography==36.0.1
 defusedxml==0.7.1
 dj-database-url==0.5.0
-Django==4.0.2
+Django==4.0.3
 django-templated-mail==1.1.1
 djangorestframework==3.13.1
 djangorestframework-simplejwt==4.8.0
@@ -40,7 +40,7 @@ pep8-naming==0.10.0
 pip==21.2.3
 platformdirs==2.5.1
 pluggy==1.0.0
-prospector==1.7.2
+prospector==1.7.7
 psycopg2==2.9.3
 py==1.11.0
 pycodestyle==2.8.0
@@ -54,14 +54,14 @@ pylint-django==2.5.2
 pylint-flask==0.6
 pylint-plugin-utils==0.7
 pyparsing==3.0.7
-pytest==7.0.1
+pytest==7.1.0
 pytest-cov==3.0.0
 pytest-django==4.5.2
 python-decouple==3.6
 python3-openid==3.2.0
 pytz==2021.3
 PyYAML==6.0
-regex==2022.1.18
+regex==2022.3.2
 requests==2.27.1
 requests-oauthlib==1.3.1
 requirements-detector==0.7
